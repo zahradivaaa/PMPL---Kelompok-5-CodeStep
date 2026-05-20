@@ -491,54 +491,54 @@
 
             <h1 class="page-heading">Hai, {{ Auth::user()->name }}!</h1>
 
-            {{-- ── Top row ── --}}
-            <div class="top-row">
+{{-- ── Top row ── --}}
+<div class="top-row">
 
-                {{-- Streak --}}
-                <div class="streak-card">
-                    <div class="streak-header">
-                        <img src="{{ asset('img/streak.png') }}" alt="Robot" style="height:70px;object-fit:contain;">
-                        <div class="streak-info">
-                            <div class="streak-label">Current Streak</div>
-                            <div class="streak-days">🔥 2 <span>days</span></div>
-                        </div>
+    {{-- Streak --}}
+    <div class="streak-card">
+        <div class="streak-header">
+            <img src="{{ asset('img/streak.png') }}" alt="Robot" style="height:70px;object-fit:contain;">
+            <div class="streak-info">
+                <div class="streak-label">Current Streak</div>
+                <div class="streak-days">🔥 {{ $user->streak }} <span>days</span></div>
+            </div>
+        </div>
+        <div class="streak-week">
+            @foreach(['S','M','T','W','T','F','S'] as $i => $d)
+                <div class="day">
+                    <span class="day-name">{{ $d }}</span>
+                    <span class="flame {{ !empty($weekly['days'][$i]) ? 'active' : '' }}">🔥</span>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
+    {{-- Progress --}}
+    <div class="progress-card">
+        <div class="donut-wrap">
+            <canvas id="donut" width="110" height="110"></canvas>
+            <div class="donut-center">
+                <span class="big">{{ $totalPct > 0 ? round($totalPct).'%' : '0%' }}</span>
+                <span class="small">selesai</span>
+            </div>
+        </div>
+        <div class="progress-list">
+            <h3>Progress saya <a href="{{ route('progress') }}" style="font-size:1.2rem;font-weight:700;">❯</a></h3>
+            @foreach($progress as $p)
+                <div class="lang-row">
+                    <div class="lang-label" style="display:flex;justify-content:space-between;margin-bottom:.3rem;">
+                        <span>{{ $p['lang'] }}</span>
+                        <span style="font-size:.75rem;color:{{ $p['pct'] > 0 ? $p['color'] : '#94A3B8' }};">{{ $p['pct'] }}%</span>
                     </div>
-                    <div class="streak-week">
-                        @foreach(['S','M','T','W','T','F','S'] as $i => $d)
-                            <div class="day">
-                                <span class="day-name">{{ $d }}</span>
-                                <span class="flame {{ $i < 2 ? 'active' : '' }}">🔥</span>
-                            </div>
-                        @endforeach
+                    <div class="bar-bg">
+                        <div class="bar-fill" style="width:{{ $p['pct'] > 0 ? $p['pct'] : 100 }}%;background:{{ $p['pct'] > 0 ? $p['color'] : '#E2E8F0' }};"></div>
                     </div>
                 </div>
+            @endforeach
+        </div>
+    </div>
 
-                {{-- Progress --}}
-                <div class="progress-card">
-                    <div class="donut-wrap">
-                        <canvas id="donut" width="110" height="110"></canvas>
-                        <div class="donut-center">
-                            <span class="big">30</span>
-                            <span class="small">45%</span>
-                            <span class="small">25%</span>
-                        </div>
-                    </div>
-                    <div class="progress-list">
-                        <h3>Progress saya <a href="{{ route('progress') }}">›</a></h3>
-                        <div class="lang-row">
-                            <div class="lang-label">Java</div>
-                            <div class="bar-bg"><div class="bar-fill" style="width:60%;background:#3B82F6;"></div></div>
-                        </div>
-                        <div class="lang-row">
-                            <div class="lang-label">Python</div>
-                            <div class="bar-bg"><div class="bar-fill" style="width:35%;background:#F59E0B;"></div></div>
-                        </div>
-                        <div class="lang-row">
-                            <div class="lang-label">PHP</div>
-                            <div class="bar-bg"><div class="bar-fill" style="width:25%;background:#22C55E;"></div></div>
-                        </div>
-                    </div>
-                </div>
+</div>
             </div>
 
             {{-- ── Category cards ── --}}
@@ -618,21 +618,38 @@
         const c = document.getElementById('donut');
         if (!c) return;
         const ctx = c.getContext('2d');
-        const slices = [
-            { pct: 0.60, color: '#3B82F6' },
-            { pct: 0.25, color: '#F59E0B' },
-            { pct: 0.15, color: '#22C55E' },
-        ];
+        const progressData = @json($progress);
+        const total = progressData.reduce((s, p) => s + p.pct, 0);
         let start = -Math.PI / 2;
-        slices.forEach(s => {
-            const end = start + Math.PI * 2 * s.pct;
+
+        if (total === 0) {
+            // Semua 0% → lingkaran abu-abu penuh
             ctx.beginPath();
-            ctx.arc(55, 55, 40, start, end);
-            ctx.strokeStyle = s.color;
+            ctx.arc(55, 55, 40, 0, Math.PI * 2);
+            ctx.strokeStyle = '#E2E8F0';
             ctx.lineWidth = 12;
             ctx.stroke();
-            start = end;
-        });
+        } else {
+            progressData.forEach(p => {
+                if (p.pct === 0) return;
+                const end = start + Math.PI * 2 * (p.pct / 100);
+                ctx.beginPath();
+                ctx.arc(55, 55, 40, start, end);
+                ctx.strokeStyle = p.color;
+                ctx.lineWidth = 12;
+                ctx.stroke();
+                start = end;
+            });
+            // Sisa abu-abu
+            if (total < 100) {
+                const end = start + Math.PI * 2 * ((100 - total) / 100);
+                ctx.beginPath();
+                ctx.arc(55, 55, 40, start, end);
+                ctx.strokeStyle = '#E2E8F0';
+                ctx.lineWidth = 12;
+                ctx.stroke();
+            }
+        }
     })();
 
     // ── Sidebar mobile ──
