@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Progress Saya – CodeStep</title>
+    <title>Progress {{ $data['lang'] }} – CodeStep</title>
     @vite(['resources/css/welcome.css', 'resources/js/app.js'])
     <style>
         :root {
@@ -18,7 +18,7 @@
             --white:      #FFFFFF;
             --sidebar-w:  260px;
             --topbar-h:   60px;
-            --radius:     12px;
+            --lang-color: {{ $data['color'] }};
         }
 
         body { font-family: 'Poppins', sans-serif; background: #F1F5F9; min-height: 100vh; margin: 0; }
@@ -27,8 +27,7 @@
 
         /* ── Sidebar ── */
         .sidebar {
-            width: var(--sidebar-w);
-            background: var(--white);
+            width: var(--sidebar-w); background: var(--white);
             border-right: 1px solid var(--border);
             display: flex; flex-direction: column;
             position: fixed; top: 0; left: 0; bottom: 0;
@@ -47,6 +46,7 @@
         .nav-item.active { background: var(--blue); color: var(--white); font-weight: 600; }
         .nav-item svg { width: 20px; height: 20px; flex-shrink: 0; }
         .nav-item img.nav-icon { width: 20px; height: 20px; flex-shrink: 0; object-fit: contain; }
+        .nav-item.active img.nav-icon { filter: brightness(0) invert(1); }
         .nav-toggle {
             display: flex; align-items: center; justify-content: space-between;
             padding: .7rem 1rem; border-radius: 10px;
@@ -90,94 +90,63 @@
             background: linear-gradient(135deg, var(--blue), var(--blue-dark));
             display: flex; align-items: center; justify-content: center;
             color: white; font-size: .85rem; font-weight: 700; flex-shrink: 0;
-            transition: transform .2s, box-shadow .2s;
         }
-        .avatar-btn:hover .avatar-circle { transform: scale(1.08); box-shadow: 0 2px 10px rgba(59,130,246,.4); }
         .username { font-weight: 600; color: var(--blue); font-size: .95rem; }
 
         /* ── Page content ── */
         .page-content { flex: 1; padding: 2rem; }
-        .page-heading { font-size: 1.5rem; font-weight: 800; color: var(--blue-dark); margin-bottom: 1.5rem; }
 
-        /* ── Summary box ── */
-        .summary-box {
-            background: var(--white);
-            border: 2px solid var(--border);
-            border-radius: 20px;
+        /* ── Hero banner bahasa ── */
+        .lang-banner {
+            background: var(--blue-light);
+            border-radius: 16px;
             padding: 1.5rem 2rem;
             display: flex;
             align-items: center;
-            gap: 2rem;
+            gap: 1.5rem;
             margin-bottom: 1.5rem;
-            flex-wrap: wrap;
         }
+        .lang-banner img { height: 80px; object-fit: contain; }
+        .lang-banner h1 { font-size: 2rem; font-weight: 800; color: var(--text); margin: 0; }
 
-        /* Donut */
-        .donut-wrap { position: relative; flex-shrink: 0; }
-        .donut-center {
-            position: absolute; inset: 0;
-            display: flex; align-items: center; justify-content: center;
-            flex-direction: column; pointer-events: none;
-        }
-        .donut-center .big { font-size: 1rem; font-weight: 800; color: var(--blue); }
-        .donut-center .small { font-size: .6rem; color: var(--text-muted); font-weight: 600; }
-
-        /* Stat cards */
-        .stat-cards { display: flex; gap: 1rem; flex-wrap: wrap; }
-        .stat-card {
+        /* ── Progress sections ── */
+        .progress-section {
             background: var(--white);
             border: 1.5px solid var(--border);
-            border-radius: 14px;
-            padding: 1rem 1.5rem;
-            display: flex; align-items: center; gap: .875rem;
-            min-width: 140px;
-        }
-        .stat-icon {
-            width: 40px; height: 40px; border-radius: 10px;
-            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-        }
-        .stat-icon svg { width: 22px; height: 22px; }
-        .stat-icon.orange { background: #FEF3C7; }
-        .stat-icon.green  { background: #DCFCE7; }
-        .stat-icon.blue   { background: var(--blue-light); }
-        .stat-label { font-size: .75rem; color: var(--text-muted); font-weight: 500; }
-        .stat-value { font-size: 1.5rem; font-weight: 800; color: var(--text); line-height: 1.1; }
-
-        /* ── Language progress cards ── */
-        .lang-progress-card {
-            background: var(--white);
             border-radius: 16px;
-            border: 1.5px solid var(--border);
             padding: 1.25rem 1.5rem;
             margin-bottom: 1rem;
-            display: flex; align-items: center; gap: 1.5rem;
-            cursor: pointer;
-            transition: box-shadow .2s, border-color .2s, transform .2s;
         }
-        .lang-progress-card:hover {
-            box-shadow: 0 4px 20px rgba(59,130,246,.12);
-            transform: translateY(-2px);
+        .progress-section-header {
+            display: flex; align-items: center; gap: 1rem;
+            margin-bottom: 1rem;
         }
-        .lang-progress-card.java   { border-left: 4px solid #3B82F6; }
-        .lang-progress-card.python { border-left: 4px solid #F59E0B; }
-        .lang-progress-card.php    { border-left: 4px solid #22C55E; }
-
-        .lang-logo { width: 60px; height: 60px; object-fit: contain; flex-shrink: 0; }
-        .lang-logo-fallback { font-size: 2.5rem; flex-shrink: 0; }
-
-        .lang-body { flex: 1; }
-        .lang-body-top {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: .5rem;
+        .section-icon {
+            width: 44px; height: 44px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
         }
-        .lang-name { font-size: 1rem; font-weight: 700; color: var(--text); }
-        .lang-pct  { font-size: 1rem; font-weight: 700; color: var(--text-muted); }
+        .section-icon svg { width: 24px; height: 24px; }
+        .section-icon.orange { background: #FEF3C7; }
+        .section-icon.green  { background: #DCFCE7; }
+        .section-icon.blue   { background: var(--blue-light); }
+        .section-title-text { font-size: 1rem; font-weight: 700; color: var(--text); }
 
         .bar-bg { background: #F1F5F9; border-radius: 99px; height: 8px; overflow: hidden; }
-        .bar-fill { height: 100%; border-radius: 99px; transition: width .6s ease; }
+        .bar-fill { height: 100%; border-radius: 99px; transition: width .8s ease; }
 
-        .card-arrow { color: var(--text-muted); flex-shrink: 0; display: flex; align-items: center; }
-        .card-arrow svg { width: 20px; height: 20px; }
+        /* Kemajuan keseluruhan */
+        .kemajuan-section {
+            background: var(--white);
+            border: 1.5px solid var(--lang-color);
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .kemajuan-label {
+            font-size: .95rem; font-weight: 700;
+            color: var(--text); margin-bottom: .75rem;
+        }
 
         /* ── Footer ── */
         .dash-footer {
@@ -210,9 +179,8 @@
             border-top: 1px solid var(--border);
         }
 
-        /* ── Mobile overlay ── */
+        /* ── Mobile ── */
         .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 150; }
-
         @media (max-width: 900px) { .footer-inner { grid-template-columns: 1fr; gap: 2rem; } }
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); }
@@ -224,11 +192,8 @@
             .dash-footer { margin: 2rem -1rem 0; padding: 2rem 1rem 0; }
         }
         @media (max-width: 520px) {
-            .summary-box { flex-direction: column; align-items: flex-start; }
-            .stat-cards { flex-direction: column; width: 100%; }
-            .stat-card { min-width: unset; }
-            .lang-progress-card { gap: 1rem; }
-            .lang-logo { width: 44px; height: 44px; }
+            .lang-banner h1 { font-size: 1.5rem; }
+            .lang-banner img { height: 56px; }
         }
     </style>
 </head>
@@ -252,8 +217,8 @@
             </a>
 
             <a href="{{ route('progress') }}" class="nav-item active">
-                <img src="{{ asset('img/iconprogres-white.png') }}" alt="Progress" class="nav-icon">
-            Progress
+                <img src="{{ asset('img/iconprogres.png') }}" alt="Progress" class="nav-icon">
+                Progress
             </a>
 
             <div class="nav-toggle" id="kategoriToggle" onclick="toggleKategori()">
@@ -299,7 +264,7 @@
                 </svg>
             </button>
             <a href="{{ route('profile.edit') }}" class="avatar-btn">
-                <div class="avatar-circle" title="Lihat Profil">
+                <div class="avatar-circle">
                     @php
                         $nameParts = explode(' ', Auth::user()->name);
                         $initials = strtoupper(substr($nameParts[0], 0, 1));
@@ -312,122 +277,69 @@
         </header>
 
         <div class="page-content">
-            <h1 class="page-heading">Progress Saya</h1>
 
-            {{-- ── Summary Box ── --}}
-            <div class="summary-box">
-                <div class="donut-wrap">
-                    <canvas id="donut" width="120" height="120"></canvas>
-                    <div class="donut-center">
-                        <span class="big">{{ $totalPct > 0 ? round($totalPct).'%' : '0%' }}</span>
-                        <span class="small">selesai</span>
-                    </div>
-                </div>
+            {{-- ── Hero Banner ── --}}
+            <div class="lang-banner">
+                <img src="{{ asset('img/' . $data['icon']) }}" alt="{{ $data['lang'] }}"
+                     onerror="this.style.display='none'">
+                <h1>{{ $data['lang'] }}</h1>
+            </div>
 
-                <div class="stat-cards">
-                    <div class="stat-card">
-                        <div class="stat-icon orange">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <div class="stat-label">Pelajaran</div>
-                            <div class="stat-value">{{ $totalPelajaran ?? 2 }}</div>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-icon green">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M9 11l3 3L22 4"/>
-                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <div class="stat-label">Quiz</div>
-                            <div class="stat-value">{{ $totalQuiz ?? 2 }}</div>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-icon blue">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="8" r="6"/>
-                                <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <div class="stat-label">Nilai</div>
-                            <div class="stat-value" style="font-size:1.1rem;">{{ $avgNilai ?? '89,7' }}<span style="font-size:.75rem;font-weight:500;color:var(--text-muted)">/100</span></div>
-                        </div>
-                    </div>
+            {{-- ── Kemajuan Keseluruhan ── --}}
+            <div class="kemajuan-section">
+                <div class="kemajuan-label">Kemajuan Keseluruhan</div>
+                <div class="bar-bg">
+                    <div class="bar-fill" style="width:{{ $data['kemajuan'] }}%; background:{{ $data['color'] }};"></div>
                 </div>
             </div>
 
-            {{-- ── Java ── --}}
-<a href="{{ route('progress.java') }}" class="lang-progress-card java">
-    <img src="{{ asset('img/java.png') }}" alt="Java" class="lang-logo"
-         onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-    <span class="lang-logo-fallback" style="display:none">☕</span>
-    <div class="lang-body">
-        <div class="lang-body-top">
-            <span class="lang-name">Java</span>
-            <span class="lang-pct">{{ $progress[0]['pct'] ?? 30 }}%</span>
-        </div>
-        <div class="bar-bg">
-            <div class="bar-fill" style="width:{{ $progress[0]['pct'] ?? 30 }}%; background:#3B82F6;"></div>
-        </div>
-    </div>
-    <div class="card-arrow">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="9 18 15 12 9 6"/>
-        </svg>
-    </div>
-</a>
+            {{-- ── Pelajaran ── --}}
+            <div class="progress-section">
+                <div class="progress-section-header">
+                    <div class="section-icon orange">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                        </svg>
+                    </div>
+                    <span class="section-title-text">Pelajaran</span>
+                </div>
+                <div class="bar-bg">
+                    <div class="bar-fill" style="width:{{ $data['pelajaran']['pct'] }}%; background:{{ $data['color'] }};"></div>
+                </div>
+            </div>
 
-{{-- ── Phyton ── --}}
-<a href="{{ route('progress.python') }}" class="lang-progress-card python">
-    <img src="{{ asset('img/phyton.png') }}" alt="Phyton" class="lang-logo"
-         onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-    <span class="lang-logo-fallback" style="display:none">🐍</span>
-    <div class="lang-body">
-        <div class="lang-body-top">
-            <span class="lang-name">Phyton</span>
-            <span class="lang-pct">{{ $progress[1]['pct'] ?? 45 }}%</span>
-        </div>
-        <div class="bar-bg">
-            <div class="bar-fill" style="width:{{ $progress[1]['pct'] ?? 45 }}%; background:#F59E0B;"></div>
-        </div>
-    </div>
-    <div class="card-arrow">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="9 18 15 12 9 6"/>
-        </svg>
-    </div>
-</a>
+            {{-- ── Quiz ── --}}
+            <div class="progress-section">
+                <div class="progress-section-header">
+                    <div class="section-icon green">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 11l3 3L22 4"/>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                        </svg>
+                    </div>
+                    <span class="section-title-text">Quiz</span>
+                </div>
+                <div class="bar-bg">
+                    <div class="bar-fill" style="width:{{ $data['quiz']['pct'] }}%; background:{{ $data['color'] }};"></div>
+                </div>
+            </div>
 
-{{-- ── PHP ── --}}
-<a href="{{ route('progress.php') }}" class="lang-progress-card php">
-    <img src="{{ asset('img/php.png') }}" alt="PHP" class="lang-logo"
-         onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-    <span class="lang-logo-fallback" style="display:none">🐘</span>
-    <div class="lang-body">
-        <div class="lang-body-top">
-            <span class="lang-name">PHP</span>
-            <span class="lang-pct">{{ $progress[2]['pct'] ?? 25 }}%</span>
-        </div>
-        <div class="bar-bg">
-            <div class="bar-fill" style="width:{{ $progress[2]['pct'] ?? 25 }}%; background:#22C55E;"></div>
-        </div>
-    </div>
-    <div class="card-arrow">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="9 18 15 12 9 6"/>
-        </svg>
-    </div>
-</a>
+            {{-- ── Nilai ── --}}
+            <div class="progress-section">
+                <div class="progress-section-header">
+                    <div class="section-icon blue">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="8" r="6"/>
+                            <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+                        </svg>
+                    </div>
+                    <span class="section-title-text">Nilai</span>
+                </div>
+                <div class="bar-bg">
+                    <div class="bar-fill" style="width:{{ $data['nilai']['pct'] }}%; background:{{ $data['color'] }};"></div>
+                </div>
+            </div>
 
             {{-- ── Footer ── --}}
             <footer class="dash-footer">
@@ -478,42 +390,6 @@
 </div>
 
 <script>
-    (function () {
-        const c = document.getElementById('donut');
-        if (!c) return;
-        const ctx = c.getContext('2d');
-        const progressData = @json($progress);
-        const total = progressData.reduce((s, p) => s + p.pct, 0);
-        let start = -Math.PI / 2;
-
-        if (total === 0) {
-            ctx.beginPath();
-            ctx.arc(60, 60, 44, 0, Math.PI * 2);
-            ctx.strokeStyle = '#E2E8F0';
-            ctx.lineWidth = 14;
-            ctx.stroke();
-        } else {
-            progressData.forEach(p => {
-                if (p.pct === 0) return;
-                const end = start + Math.PI * 2 * (p.pct / 100);
-                ctx.beginPath();
-                ctx.arc(60, 60, 44, start, end);
-                ctx.strokeStyle = p.color;
-                ctx.lineWidth = 14;
-                ctx.stroke();
-                start = end;
-            });
-            if (total < 100) {
-                const end = start + Math.PI * 2 * ((100 - total) / 100);
-                ctx.beginPath();
-                ctx.arc(60, 60, 44, start, end);
-                ctx.strokeStyle = '#E2E8F0';
-                ctx.lineWidth = 14;
-                ctx.stroke();
-            }
-        }
-    })();
-
     function openSidebar()  { document.getElementById('sidebar').classList.add('open'); document.getElementById('overlay').classList.add('open'); }
     function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
     function toggleKategori() {
