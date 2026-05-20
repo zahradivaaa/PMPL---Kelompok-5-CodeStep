@@ -123,6 +123,13 @@
             transition: opacity .2s;
         }
         .toggle-password img.visible { opacity: 1; }
+        /* Sembunyikan icon mata bawaan browser (Chrome, Edge, IE) */
+        input[type="password"]::-ms-reveal,
+        input[type="password"]::-ms-clear,
+        input::-webkit-credentials-auto-fill-button,
+        input::-webkit-textfield-decoration-container {
+            display: none !important;
+        }
 
         /* alert */
         .alert-error {

@@ -324,6 +324,15 @@ body {
     opacity: 0.4;
     object-fit: contain;
 }
+
+.toggle-password img.visible { opacity: 1; }
+    /* Sembunyikan icon mata bawaan browser (Chrome, Edge, IE) */
+    input[type="password"]::-ms-reveal,
+    input[type="password"]::-ms-clear,
+    input::-webkit-credentials-auto-fill-button,
+    input::-webkit-textfield-decoration-container {
+        display: none !important;
+    }
  
 .forgot-password {
     text-align: right;
