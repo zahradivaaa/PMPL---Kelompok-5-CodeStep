@@ -427,11 +427,11 @@
                     <polyline points="6 9 12 15 18 9"/>
                 </svg>
             </div>
-            <div class="nav-sub" id="kategoriSub">
-                <a href="#" class="nav-item">Java</a>
-                <a href="#" class="nav-item">Python</a>
-                <a href="#" class="nav-item">PHP</a>
-            </div>
+<div class="nav-sub" id="kategoriSub">
+    <a href="{{ route('kategori.show', 'java') }}" class="nav-item">Java</a>
+    <a href="{{ route('kategori.show', 'python') }}" class="nav-item">Python</a>
+    <a href="{{ route('kategori.show', 'php') }}" class="nav-item">PHP</a>
+</div>
         </nav>
 
         <div class="sidebar-footer">
@@ -542,27 +542,27 @@
             </div>
 
             {{-- ── Category cards ── --}}
-            <div class="cards-grid">
-                <div class="lang-card">
-                    {{-- Gambar Java dari public/img, fallback ke emoji --}}
-                    <img src="{{ asset('img/java.png') }}" alt="Java" class="lang-img"
-                         onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                    <div class="lang-icon" style="display:none">☕</div>
-                    <div class="lang-name">Java</div>
-                </div>
-                <div class="lang-card">
-                    <img src="{{ asset('img/phyton.png') }}" alt="Python" class="lang-img"
-                         onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                    <div class="lang-icon" style="display:none">🐍</div>
-                    <div class="lang-name">Python</div>
-                </div>
-                <div class="lang-card">
-                    <img src="{{ asset('img/php.png') }}" alt="PHP" class="lang-img"
-                         onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                    <div class="lang-icon" style="display:none">🐘</div>
-                    <div class="lang-name">PHP</div>
-                </div>
-            </div>
+           {{-- ── Category cards ── --}}
+<div class="cards-grid">
+    <a href="{{ route('kategori.show', 'java') }}" class="lang-card">
+        <img src="{{ asset('img/java.png') }}" alt="Java" class="lang-img"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <div class="lang-icon" style="display:none">☕</div>
+        <div class="lang-name">Java</div>
+    </a>
+    <a href="{{ route('kategori.show', 'python') }}" class="lang-card">
+        <img src="{{ asset('img/phyton.png') }}" alt="Python" class="lang-img"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <div class="lang-icon" style="display:none">🐍</div>
+        <div class="lang-name">Python</div>
+    </a>
+    <a href="{{ route('kategori.show', 'php') }}" class="lang-card">
+        <img src="{{ asset('img/php.png') }}" alt="PHP" class="lang-img"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <div class="lang-icon" style="display:none">🐘</div>
+        <div class="lang-name">PHP</div>
+    </a>
+</div>
 
               <!-- FOOTER -->
     <footer class="footer">
