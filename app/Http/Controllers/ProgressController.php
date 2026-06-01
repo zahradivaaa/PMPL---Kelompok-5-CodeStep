@@ -35,11 +35,10 @@ class ProgressController extends Controller
             'lang'      => 'Java',
             'color'     => '#3B82F6',
             'icon'      => 'java.png',
-            'pct'       => 30,
             'kemajuan'  => 30,
-            'pelajaran' => ['pct' => 40, 'label' => 'Pelajaran'],
-            'quiz'      => ['pct' => 25, 'label' => 'Quiz'],
-            'nilai'     => ['pct' => 60, 'label' => 'Nilai'],
+            'pelajaran' => ['pct' => 40, 'done' => 3,  'total' => 8],
+            'quiz'      => ['pct' => 25, 'done' => 1,  'total' => 5],
+            'nilai'     => ['pct' => 60, 'score' => 60, 'max'  => 100],
         ];
 
         return view('progress-detail', compact('user', 'data'));
@@ -53,11 +52,10 @@ class ProgressController extends Controller
             'lang'      => 'Phyton',
             'color'     => '#F59E0B',
             'icon'      => 'phyton.png',
-            'pct'       => 45,
             'kemajuan'  => 45,
-            'pelajaran' => ['pct' => 50, 'label' => 'Pelajaran'],
-            'quiz'      => ['pct' => 30, 'label' => 'Quiz'],
-            'nilai'     => ['pct' => 70, 'label' => 'Nilai'],
+            'pelajaran' => ['pct' => 50, 'done' => 4,  'total' => 8],
+            'quiz'      => ['pct' => 30, 'done' => 2,  'total' => 5],
+            'nilai'     => ['pct' => 70, 'score' => 70, 'max'  => 100],
         ];
 
         return view('progress-detail', compact('user', 'data'));
@@ -71,11 +69,10 @@ class ProgressController extends Controller
             'lang'      => 'PHP',
             'color'     => '#22C55E',
             'icon'      => 'php.png',
-            'pct'       => 25,
             'kemajuan'  => 25,
-            'pelajaran' => ['pct' => 20, 'label' => 'Pelajaran'],
-            'quiz'      => ['pct' => 15, 'label' => 'Quiz'],
-            'nilai'     => ['pct' => 50, 'label' => 'Nilai'],
+            'pelajaran' => ['pct' => 20, 'done' => 2,  'total' => 8],
+            'quiz'      => ['pct' => 15, 'done' => 1,  'total' => 5],
+            'nilai'     => ['pct' => 50, 'score' => 50, 'max'  => 100],
         ];
 
         return view('progress-detail', compact('user', 'data'));

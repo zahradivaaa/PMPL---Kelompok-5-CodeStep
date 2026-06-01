@@ -96,6 +96,14 @@
         /* ── Page content ── */
         .page-content { flex: 1; padding: 2rem; }
 
+        /* ── Breadcrumb ── */
+        .breadcrumb {
+            font-size: .85rem; color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+        .breadcrumb a { color: var(--text-muted); }
+        .breadcrumb a:hover { color: var(--blue); }
+
         /* ── Hero banner bahasa ── */
         .lang-banner {
             background: var(--blue-light);
@@ -109,6 +117,21 @@
         .lang-banner img { height: 80px; object-fit: contain; }
         .lang-banner h1 { font-size: 2rem; font-weight: 800; color: var(--text); margin: 0; }
 
+        /* ── Kemajuan Keseluruhan ── */
+        .kemajuan-section {
+            background: var(--white);
+            border: 1.5px solid var(--lang-color);
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .kemajuan-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: .75rem;
+        }
+        .kemajuan-label { font-size: .95rem; font-weight: 700; color: var(--text); }
+        .kemajuan-pct   { font-size: .95rem; font-weight: 700; color: var(--text-muted); }
+
         /* ── Progress sections ── */
         .progress-section {
             background: var(--white);
@@ -118,9 +141,10 @@
             margin-bottom: 1rem;
         }
         .progress-section-header {
-            display: flex; align-items: center; gap: 1rem;
+            display: flex; align-items: center; justify-content: space-between;
             margin-bottom: 1rem;
         }
+        .progress-section-header-left { display: flex; align-items: center; gap: 1rem; }
         .section-icon {
             width: 44px; height: 44px; border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
@@ -131,22 +155,10 @@
         .section-icon.green  { background: #DCFCE7; }
         .section-icon.blue   { background: var(--blue-light); }
         .section-title-text { font-size: 1rem; font-weight: 700; color: var(--text); }
+        .section-value { font-size: .9rem; font-weight: 600; color: var(--text-muted); }
 
         .bar-bg { background: #F1F5F9; border-radius: 99px; height: 8px; overflow: hidden; }
         .bar-fill { height: 100%; border-radius: 99px; transition: width .8s ease; }
-
-        /* Kemajuan keseluruhan */
-        .kemajuan-section {
-            background: var(--white);
-            border: 1.5px solid var(--lang-color);
-            border-radius: 16px;
-            padding: 1.25rem 1.5rem;
-            margin-bottom: 1rem;
-        }
-        .kemajuan-label {
-            font-size: .95rem; font-weight: 700;
-            color: var(--text); margin-bottom: .75rem;
-        }
 
         /* ── Footer ── */
         .dash-footer {
@@ -231,9 +243,9 @@
                 </svg>
             </div>
             <div class="nav-sub" id="kategoriSub">
-                <a href="#" class="nav-item">Java</a>
-                <a href="#" class="nav-item">Phyton</a>
-                <a href="#" class="nav-item">PHP</a>
+                <a href="{{ route('kategori.show', 'java') }}" class="nav-item">Java</a>
+                <a href="{{ route('kategori.show', 'python') }}" class="nav-item">Python</a>
+                <a href="{{ route('kategori.show', 'php') }}" class="nav-item">PHP</a>
             </div>
         </nav>
         <div class="sidebar-footer">
@@ -278,6 +290,13 @@
 
         <div class="page-content">
 
+            {{-- ── Breadcrumb ── --}}
+            <nav class="breadcrumb">
+                <a href="{{ route('progress') }}" class="breadcrumb-link">Progress</a>
+                <span class="breadcrumb-sep">/</span>
+                <span class="breadcrumb-current">{{ $data['lang'] }}</span>
+            </nav>
+
             {{-- ── Hero Banner ── --}}
             <div class="lang-banner">
                 <img src="{{ asset('img/' . $data['icon']) }}" alt="{{ $data['lang'] }}"
@@ -287,7 +306,10 @@
 
             {{-- ── Kemajuan Keseluruhan ── --}}
             <div class="kemajuan-section">
-                <div class="kemajuan-label">Kemajuan Keseluruhan</div>
+                <div class="kemajuan-header">
+                    <span class="kemajuan-label">Kemajuan Keseluruhan</span>
+                    <span class="kemajuan-pct">{{ $data['kemajuan'] }}%</span>
+                </div>
                 <div class="bar-bg">
                     <div class="bar-fill" style="width:{{ $data['kemajuan'] }}%; background:{{ $data['color'] }};"></div>
                 </div>
@@ -296,13 +318,16 @@
             {{-- ── Pelajaran ── --}}
             <div class="progress-section">
                 <div class="progress-section-header">
-                    <div class="section-icon orange">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-                        </svg>
+                    <div class="progress-section-header-left">
+                        <div class="section-icon orange">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                            </svg>
+                        </div>
+                        <span class="section-title-text">Pelajaran</span>
                     </div>
-                    <span class="section-title-text">Pelajaran</span>
+                    <span class="section-value">{{ $data['pelajaran']['done'] }}/{{ $data['pelajaran']['total'] }}</span>
                 </div>
                 <div class="bar-bg">
                     <div class="bar-fill" style="width:{{ $data['pelajaran']['pct'] }}%; background:{{ $data['color'] }};"></div>
@@ -312,13 +337,16 @@
             {{-- ── Quiz ── --}}
             <div class="progress-section">
                 <div class="progress-section-header">
-                    <div class="section-icon green">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M9 11l3 3L22 4"/>
-                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-                        </svg>
+                    <div class="progress-section-header-left">
+                        <div class="section-icon green">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 11l3 3L22 4"/>
+                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                            </svg>
+                        </div>
+                        <span class="section-title-text">Quiz</span>
                     </div>
-                    <span class="section-title-text">Quiz</span>
+                    <span class="section-value">{{ $data['quiz']['done'] }}/{{ $data['quiz']['total'] }}</span>
                 </div>
                 <div class="bar-bg">
                     <div class="bar-fill" style="width:{{ $data['quiz']['pct'] }}%; background:{{ $data['color'] }};"></div>
@@ -328,13 +356,16 @@
             {{-- ── Nilai ── --}}
             <div class="progress-section">
                 <div class="progress-section-header">
-                    <div class="section-icon blue">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="8" r="6"/>
-                            <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
-                        </svg>
+                    <div class="progress-section-header-left">
+                        <div class="section-icon blue">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="8" r="6"/>
+                                <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+                            </svg>
+                        </div>
+                        <span class="section-title-text">Nilai</span>
                     </div>
-                    <span class="section-title-text">Nilai</span>
+                    <span class="section-value">{{ $data['nilai']['score'] }}/{{ $data['nilai']['max'] }}</span>
                 </div>
                 <div class="bar-bg">
                     <div class="bar-fill" style="width:{{ $data['nilai']['pct'] }}%; background:{{ $data['color'] }};"></div>

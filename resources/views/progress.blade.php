@@ -266,9 +266,9 @@
                 </svg>
             </div>
             <div class="nav-sub" id="kategoriSub">
-                <a href="#" class="nav-item">Java</a>
-                <a href="#" class="nav-item">Phyton</a>
-                <a href="#" class="nav-item">PHP</a>
+                <a href="{{ route('kategori.show', 'java') }}" class="nav-item">Java</a>
+                <a href="{{ route('kategori.show', 'python') }}" class="nav-item">Python</a>
+                <a href="{{ route('kategori.show', 'php') }}" class="nav-item">PHP</a>
             </div>
         </nav>
         <div class="sidebar-footer">
