@@ -230,11 +230,11 @@
                     <polyline points="6 9 12 15 18 9"/>
                 </svg>
             </div>
-            <div class="nav-sub" id="kategoriSub">
-                <a href="#" class="nav-item">Java</a>
-                <a href="#" class="nav-item">Phyton</a>
-                <a href="#" class="nav-item">PHP</a>
-            </div>
+<div class="nav-sub" id="kategoriSub">
+    <a href="{{ route('kategori.show', 'java') }}" class="nav-item">Java</a>
+    <a href="{{ route('kategori.show', 'python') }}" class="nav-item">Python</a>
+    <a href="{{ route('kategori.show', 'php') }}" class="nav-item">PHP</a>
+</div>
         </nav>
         <div class="sidebar-footer">
             <form method="POST" action="{{ route('logout') }}">
@@ -278,18 +278,31 @@
 
         <div class="page-content">
 
+            {{-- Breadcrumb --}}
+            <div style="font-size:.85rem;color:var(--text-muted);margin-bottom:1rem;">
+                <a href="{{ route('dashboard') }}" style="color:var(--text-muted);">Dashboard</a>
+                <span> / </span>
+                <a href="{{ route('progress') }}" style="color:var(--text-muted);">Progress</a>
+                <span> / </span>
+                <span style="color:var(--blue);font-weight:600;">{{ $data['lang'] }}</span>
+            </div>
+
             {{-- ── Hero Banner ── --}}
             <div class="lang-banner">
-                <img src="{{ asset('img/' . $data['icon']) }}" alt="{{ $data['lang'] }}"
-                     onerror="this.style.display='none'">
+                <img src="{{ asset($data['icon']) }}" alt="{{ $data['lang'] }}"
+                    onerror="this.style.display='none'">
                 <h1>{{ $data['lang'] }}</h1>
             </div>
 
-            {{-- ── Kemajuan Keseluruhan ── --}}
             <div class="kemajuan-section">
-                <div class="kemajuan-label">Kemajuan Keseluruhan</div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;">
+                    <div class="kemajuan-label" style="margin-bottom:0;">Kemajuan Keseluruhan</div>
+                    <span style="font-size:.9rem;font-weight:700;color:{{ $data['kemajuan'] > 0 ? $data['color'] : '#94A3B8' }};">
+                        {{ $data['kemajuan'] }}%
+                    </span>
+                </div>
                 <div class="bar-bg">
-                    <div class="bar-fill" style="width:{{ $data['kemajuan'] }}%; background:{{ $data['color'] }};"></div>
+                    <div class="bar-fill" style="width:{{ $data['kemajuan'] > 0 ? $data['kemajuan'] : 100 }}%;background:{{ $data['kemajuan'] > 0 ? $data['color'] : '#E2E8F0' }};"></div>
                 </div>
             </div>
 
@@ -302,10 +315,13 @@
                             <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
                         </svg>
                     </div>
-                    <span class="section-title-text">Pelajaran</span>
+                    <span class="section-title-text" style="flex:1;">Pelajaran</span>
+                    <span style="font-size:.9rem;font-weight:700;color:{{ $data['pelajaran']['pct'] > 0 ? $data['color'] : '#94A3B8' }};">
+                        {{ $data['pelajaran']['pct'] }}%
+                    </span>
                 </div>
                 <div class="bar-bg">
-                    <div class="bar-fill" style="width:{{ $data['pelajaran']['pct'] }}%; background:{{ $data['color'] }};"></div>
+                    <div class="bar-fill" style="width:{{ $data['pelajaran']['pct'] > 0 ? $data['pelajaran']['pct'] : 100 }}%;background:{{ $data['pelajaran']['pct'] > 0 ? $data['color'] : '#E2E8F0' }};"></div>
                 </div>
             </div>
 
@@ -318,10 +334,13 @@
                             <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
                         </svg>
                     </div>
-                    <span class="section-title-text">Quiz</span>
+                    <span class="section-title-text" style="flex:1;">Quiz</span>
+                    <span style="font-size:.9rem;font-weight:700;color:{{ $data['quiz']['pct'] > 0 ? $data['color'] : '#94A3B8' }};">
+                        {{ $data['quiz']['pct'] }}%
+                    </span>
                 </div>
                 <div class="bar-bg">
-                    <div class="bar-fill" style="width:{{ $data['quiz']['pct'] }}%; background:{{ $data['color'] }};"></div>
+                    <div class="bar-fill" style="width:{{ $data['quiz']['pct'] > 0 ? $data['quiz']['pct'] : 100 }}%;background:{{ $data['quiz']['pct'] > 0 ? $data['color'] : '#E2E8F0' }};"></div>
                 </div>
             </div>
 
@@ -334,10 +353,13 @@
                             <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
                         </svg>
                     </div>
-                    <span class="section-title-text">Nilai</span>
+                    <span class="section-title-text" style="flex:1;">Nilai</span>
+                    <span style="font-size:.9rem;font-weight:700;color:{{ $data['nilai']['avg'] > 0 ? $data['color'] : '#94A3B8' }};">
+                        {{ $data['nilai']['avg'] }}/100
+                    </span>
                 </div>
                 <div class="bar-bg">
-                    <div class="bar-fill" style="width:{{ $data['nilai']['pct'] }}%; background:{{ $data['color'] }};"></div>
+                    <div class="bar-fill" style="width:{{ $data['nilai']['pct'] > 0 ? $data['nilai']['pct'] : 100 }}%;background:{{ $data['nilai']['pct'] > 0 ? $data['color'] : '#E2E8F0' }};"></div>
                 </div>
             </div>
 

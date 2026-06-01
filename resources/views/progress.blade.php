@@ -265,11 +265,11 @@
                     <polyline points="6 9 12 15 18 9"/>
                 </svg>
             </div>
-            <div class="nav-sub" id="kategoriSub">
-                <a href="#" class="nav-item">Java</a>
-                <a href="#" class="nav-item">Phyton</a>
-                <a href="#" class="nav-item">PHP</a>
-            </div>
+<div class="nav-sub" id="kategoriSub">
+    <a href="{{ route('kategori.show', 'java') }}" class="nav-item">Java</a>
+    <a href="{{ route('kategori.show', 'python') }}" class="nav-item">Python</a>
+    <a href="{{ route('kategori.show', 'php') }}" class="nav-item">PHP</a>
+</div>
         </nav>
         <div class="sidebar-footer">
             <form method="POST" action="{{ route('logout') }}">
@@ -312,7 +312,14 @@
         </header>
 
         <div class="page-content">
-            <h1 class="page-heading">Progress Saya</h1>
+            {{-- Breadcrumb --}}
+<div style="font-size:.85rem;color:var(--text-muted);margin-bottom:1rem;">
+    <a href="{{ route('dashboard') }}" style="color:var(--text-muted);">Dashboard</a>
+    <span> / </span>
+    <span>Progress</span>
+</div>
+
+<h1 class="page-heading">Progress Saya</h1>
 
             {{-- ── Summary Box ── --}}
             <div class="summary-box">
@@ -334,7 +341,7 @@
                         </div>
                         <div>
                             <div class="stat-label">Pelajaran</div>
-                            <div class="stat-value">{{ $totalPelajaran ?? 2 }}</div>
+                            <div class="stat-value">{{ $totalPelajaran }}</div>
                         </div>
                     </div>
 
@@ -347,7 +354,7 @@
                         </div>
                         <div>
                             <div class="stat-label">Quiz</div>
-                            <div class="stat-value">{{ $totalQuiz ?? 2 }}</div>
+                            <div class="stat-value">{{ $totalQuiz }}</div>
                         </div>
                     </div>
 
@@ -360,24 +367,26 @@
                         </div>
                         <div>
                             <div class="stat-label">Nilai</div>
-                            <div class="stat-value" style="font-size:1.1rem;">{{ $avgNilai ?? '89,7' }}<span style="font-size:.75rem;font-weight:500;color:var(--text-muted)">/100</span></div>
+                            <div class="stat-value" style="font-size:1.1rem;">{{ $avgNilai }}<span style="font-size:.75rem;font-weight:500;color:var(--text-muted)">/100</span></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {{-- ── Java ── --}}
-<a href="{{ route('progress.java') }}" class="lang-progress-card java">
-    <img src="{{ asset('img/java.png') }}" alt="Java" class="lang-logo"
+        @foreach($progress as $p)
+<a href="{{ route('progress.' . $p['slug']) }}" class="lang-progress-card {{ $p['slug'] }}">
+    <img src="{{ asset($p['icon']) }}" alt="{{ $p['lang'] }}" class="lang-logo"
          onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-    <span class="lang-logo-fallback" style="display:none">☕</span>
+    <span class="lang-logo-fallback" style="display:none">📚</span>
     <div class="lang-body">
         <div class="lang-body-top">
-            <span class="lang-name">Java</span>
-            <span class="lang-pct">{{ $progress[0]['pct'] ?? 30 }}%</span>
+            <span class="lang-name">{{ $p['lang'] }}</span>
+            <span class="lang-pct" style="color:{{ $p['pct'] > 0 ? $p['color'] : '#94A3B8' }}">
+                {{ $p['pct'] }}%
+            </span>
         </div>
         <div class="bar-bg">
-            <div class="bar-fill" style="width:{{ $progress[0]['pct'] ?? 30 }}%; background:#3B82F6;"></div>
+            <div class="bar-fill" style="width:{{ $p['pct'] > 0 ? $p['pct'] : 100 }}%;background:{{ $p['pct'] > 0 ? $p['color'] : '#E2E8F0' }};"></div>
         </div>
     </div>
     <div class="card-arrow">
@@ -386,48 +395,7 @@
         </svg>
     </div>
 </a>
-
-{{-- ── Phyton ── --}}
-<a href="{{ route('progress.python') }}" class="lang-progress-card python">
-    <img src="{{ asset('img/phyton.png') }}" alt="Phyton" class="lang-logo"
-         onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-    <span class="lang-logo-fallback" style="display:none">🐍</span>
-    <div class="lang-body">
-        <div class="lang-body-top">
-            <span class="lang-name">Phyton</span>
-            <span class="lang-pct">{{ $progress[1]['pct'] ?? 45 }}%</span>
-        </div>
-        <div class="bar-bg">
-            <div class="bar-fill" style="width:{{ $progress[1]['pct'] ?? 45 }}%; background:#F59E0B;"></div>
-        </div>
-    </div>
-    <div class="card-arrow">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="9 18 15 12 9 6"/>
-        </svg>
-    </div>
-</a>
-
-{{-- ── PHP ── --}}
-<a href="{{ route('progress.php') }}" class="lang-progress-card php">
-    <img src="{{ asset('img/php.png') }}" alt="PHP" class="lang-logo"
-         onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-    <span class="lang-logo-fallback" style="display:none">🐘</span>
-    <div class="lang-body">
-        <div class="lang-body-top">
-            <span class="lang-name">PHP</span>
-            <span class="lang-pct">{{ $progress[2]['pct'] ?? 25 }}%</span>
-        </div>
-        <div class="bar-bg">
-            <div class="bar-fill" style="width:{{ $progress[2]['pct'] ?? 25 }}%; background:#22C55E;"></div>
-        </div>
-    </div>
-    <div class="card-arrow">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="9 18 15 12 9 6"/>
-        </svg>
-    </div>
-</a>
+@endforeach
 
             {{-- ── Footer ── --}}
             <footer class="dash-footer">

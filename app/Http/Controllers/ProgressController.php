@@ -2,82 +2,133 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kategori;
+use App\Models\StudentProgress;
 use Illuminate\Support\Facades\Auth;
 
 class ProgressController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
+        $user      = Auth::user();
+        $kategoris = Kategori::with('materis')->get();
 
-        $progress = [
-            ['lang' => 'Java',   'pct' => 30, 'color' => '#3B82F6'],
-            ['lang' => 'Phyton', 'pct' => 45, 'color' => '#F59E0B'],
-            ['lang' => 'PHP',    'pct' => 25, 'color' => '#22C55E'],
-        ];
+        $progress       = [];
+        $totalPelajaran = 0;
+        $totalQuiz      = 0;
+        $totalNilai     = [];
 
-        $totalPct       = collect($progress)->avg('pct');
-        $totalPelajaran = 2;
-        $totalQuiz      = 2;
-        $avgNilai       = '89,7';
+        foreach ($kategoris as $kategori) {
+            $materiIds    = $kategori->materis->pluck('id');
+            $jumlahMateri = $materiIds->count();
+
+            if ($jumlahMateri === 0) {
+                $progress[] = [
+                    'lang'  => $kategori->nama,
+                    'slug'  => $kategori->slug,
+                    'pct'   => 0,
+                    'color' => $this->warna($kategori->slug),
+                    'icon'  => $kategori->icon,
+                ];
+                continue;
+            }
+
+            $progresses  = StudentProgress::where('user_id', $user->id)
+                ->whereIn('materi_id', $materiIds)
+                ->get();
+
+            $dibaca      = $progresses->where('materi_dibaca', true)->count();
+            $quizSelesai = $progresses->where('quiz_selesai', true)->count();
+            $nilaiList   = $progresses->whereNotNull('nilai_quiz')->pluck('nilai_quiz');
+
+            $pct = round((($dibaca + $quizSelesai) / ($jumlahMateri * 2)) * 100);
+
+            $totalPelajaran += $dibaca;
+            $totalQuiz      += $quizSelesai;
+            if ($nilaiList->count() > 0) {
+                $totalNilai = array_merge($totalNilai, $nilaiList->toArray());
+            }
+
+            $progress[] = [
+                'lang'  => $kategori->nama,
+                'slug'  => $kategori->slug,
+                'pct'   => $pct,
+                'color' => $this->warna($kategori->slug),
+                'icon'  => $kategori->icon,
+            ];
+        }
+
+        $totalPct = count($progress) > 0
+            ? round(collect($progress)->avg('pct'))
+            : 0;
+
+        $avgNilai = count($totalNilai) > 0
+            ? number_format(array_sum($totalNilai) / count($totalNilai), 1, ',', '.')
+            : '0';
 
         return view('progress', compact(
-            'user', 'progress', 'totalPct',
-            'totalPelajaran', 'totalQuiz', 'avgNilai'
+            'progress', 'totalPct', 'totalPelajaran', 'totalQuiz', 'avgNilai'
         ));
     }
 
     public function java()
     {
-        $user = Auth::user();
-
-        $data = [
-            'lang'      => 'Java',
-            'color'     => '#3B82F6',
-            'icon'      => 'java.png',
-            'pct'       => 30,
-            'kemajuan'  => 30,
-            'pelajaran' => ['pct' => 40, 'label' => 'Pelajaran'],
-            'quiz'      => ['pct' => 25, 'label' => 'Quiz'],
-            'nilai'     => ['pct' => 60, 'label' => 'Nilai'],
-        ];
-
-        return view('progress-detail', compact('user', 'data'));
+        $kategori = Kategori::where('slug', 'java')->firstOrFail();
+        $data     = $this->detailProgress(Auth::user(), $kategori);
+        return view('progress-detail', compact('data'));
     }
 
     public function python()
     {
-        $user = Auth::user();
-
-        $data = [
-            'lang'      => 'Phyton',
-            'color'     => '#F59E0B',
-            'icon'      => 'phyton.png',
-            'pct'       => 45,
-            'kemajuan'  => 45,
-            'pelajaran' => ['pct' => 50, 'label' => 'Pelajaran'],
-            'quiz'      => ['pct' => 30, 'label' => 'Quiz'],
-            'nilai'     => ['pct' => 70, 'label' => 'Nilai'],
-        ];
-
-        return view('progress-detail', compact('user', 'data'));
+        $kategori = Kategori::where('slug', 'python')->firstOrFail();
+        $data     = $this->detailProgress(Auth::user(), $kategori);
+        return view('progress-detail', compact('data'));
     }
 
     public function php()
     {
-        $user = Auth::user();
+        $kategori = Kategori::where('slug', 'php')->firstOrFail();
+        $data     = $this->detailProgress(Auth::user(), $kategori);
+        return view('progress-detail', compact('data'));
+    }
 
-        $data = [
-            'lang'      => 'PHP',
-            'color'     => '#22C55E',
-            'icon'      => 'php.png',
-            'pct'       => 25,
-            'kemajuan'  => 25,
-            'pelajaran' => ['pct' => 20, 'label' => 'Pelajaran'],
-            'quiz'      => ['pct' => 15, 'label' => 'Quiz'],
-            'nilai'     => ['pct' => 50, 'label' => 'Nilai'],
+    private function detailProgress($user, $kategori)
+    {
+        $materis      = $kategori->materis;
+        $jumlahMateri = $materis->count();
+
+        $progresses = StudentProgress::where('user_id', $user->id)
+            ->whereIn('materi_id', $materis->pluck('id'))
+            ->get();
+
+        $dibaca      = $progresses->where('materi_dibaca', true)->count();
+        $quizSelesai = $progresses->where('quiz_selesai', true)->count();
+        $nilaiList   = $progresses->whereNotNull('nilai_quiz')->pluck('nilai_quiz');
+
+        $pelajaranPct = $jumlahMateri > 0 ? round(($dibaca / $jumlahMateri) * 100) : 0;
+        $quizPct      = $jumlahMateri > 0 ? round(($quizSelesai / $jumlahMateri) * 100) : 0;
+        $avgNilai     = $nilaiList->count() > 0 ? round($nilaiList->avg()) : 0;
+        $kemajuan     = round(($pelajaranPct + $quizPct) / 2);
+
+        return [
+            'lang'      => $kategori->nama,
+            'slug'      => $kategori->slug,
+            'icon'      => $kategori->icon,
+            'color'     => $this->warna($kategori->slug),
+            'kemajuan'  => $kemajuan,
+            'pelajaran' => ['pct' => $pelajaranPct, 'selesai' => $dibaca,      'total' => $jumlahMateri],
+            'quiz'      => ['pct' => $quizPct,      'selesai' => $quizSelesai, 'total' => $jumlahMateri],
+            'nilai'     => ['pct' => $avgNilai,     'avg'     => $avgNilai],
         ];
+    }
 
-        return view('progress-detail', compact('user', 'data'));
+    private function warna($slug): string
+    {
+        return match($slug) {
+            'java'   => '#3B82F6',
+            'python' => '#F59E0B',
+            'php'    => '#22C55E',
+            default  => '#94A3B8',
+        };
     }
 }
