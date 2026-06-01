@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Guru – CodeStep</title>
+    <title>Dashboard Guru - CodeStep</title>
     @vite(['resources/css/welcome.css', 'resources/js/app.js'])
     <style>
         :root {
@@ -417,7 +417,6 @@
                 if (count($nameParts) > 1) $initials .= strtoupper(substr($nameParts[1], 0, 1));
             @endphp
 
-            <span class="role-badge">Guru</span>
             <a href="#" class="avatar-btn">
                 <div class="avatar-circle">{{ $initials }}</div>
                 <span class="username">{{ Auth::user()->name }}</span>

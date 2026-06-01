@@ -80,7 +80,6 @@ class ProgressController extends Controller
     {
         $kategori = Kategori::where('slug', 'java')->firstOrFail();
         $data = $this->detailProgress(Auth::user(), $kategori);
-
         return view('progress-detail', compact('data'));
     }
 
@@ -88,7 +87,6 @@ class ProgressController extends Controller
     {
         $kategori = Kategori::where('slug', 'python')->firstOrFail();
         $data = $this->detailProgress(Auth::user(), $kategori);
-
         return view('progress-detail', compact('data'));
     }
 
@@ -96,7 +94,6 @@ class ProgressController extends Controller
     {
         $kategori = Kategori::where('slug', 'php')->firstOrFail();
         $data = $this->detailProgress(Auth::user(), $kategori);
-
         return view('progress-detail', compact('data'));
     }
 
