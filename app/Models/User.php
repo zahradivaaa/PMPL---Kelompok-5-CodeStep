@@ -32,7 +32,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password'          => 'hashed',
-            'last_visit'        => 'date',
+            'last_visit'        => 'datetime',
             'weekly_visits'     => 'array',
         ];
     }
