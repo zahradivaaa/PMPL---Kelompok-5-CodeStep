@@ -33,7 +33,7 @@ class ProgressController extends Controller
                 continue;
             }
 
-            $progresses  = StudentProgress::where('user_id', $user->id)
+            $progresses = StudentProgress::where('user_id', $user->id)
                 ->whereIn('materi_id', $materiIds)
                 ->get();
 
@@ -44,7 +44,8 @@ class ProgressController extends Controller
             $pct = round((($dibaca + $quizSelesai) / ($jumlahMateri * 2)) * 100);
 
             $totalPelajaran += $dibaca;
-            $totalQuiz      += $quizSelesai;
+            $totalQuiz += $quizSelesai;
+
             if ($nilaiList->count() > 0) {
                 $totalNilai = array_merge($totalNilai, $nilaiList->toArray());
             }
@@ -67,28 +68,35 @@ class ProgressController extends Controller
             : '0';
 
         return view('progress', compact(
-            'progress', 'totalPct', 'totalPelajaran', 'totalQuiz', 'avgNilai'
+            'progress',
+            'totalPct',
+            'totalPelajaran',
+            'totalQuiz',
+            'avgNilai'
         ));
     }
 
     public function java()
     {
         $kategori = Kategori::where('slug', 'java')->firstOrFail();
-        $data     = $this->detailProgress(Auth::user(), $kategori);
+        $data = $this->detailProgress(Auth::user(), $kategori);
+
         return view('progress-detail', compact('data'));
     }
 
     public function python()
     {
         $kategori = Kategori::where('slug', 'python')->firstOrFail();
-        $data     = $this->detailProgress(Auth::user(), $kategori);
+        $data = $this->detailProgress(Auth::user(), $kategori);
+
         return view('progress-detail', compact('data'));
     }
 
     public function php()
     {
         $kategori = Kategori::where('slug', 'php')->firstOrFail();
-        $data     = $this->detailProgress(Auth::user(), $kategori);
+        $data = $this->detailProgress(Auth::user(), $kategori);
+
         return view('progress-detail', compact('data'));
     }
 
@@ -116,15 +124,26 @@ class ProgressController extends Controller
             'icon'      => $kategori->icon,
             'color'     => $this->warna($kategori->slug),
             'kemajuan'  => $kemajuan,
-            'pelajaran' => ['pct' => $pelajaranPct, 'selesai' => $dibaca,      'total' => $jumlahMateri],
-            'quiz'      => ['pct' => $quizPct,      'selesai' => $quizSelesai, 'total' => $jumlahMateri],
-            'nilai'     => ['pct' => $avgNilai,     'avg'     => $avgNilai],
+            'pelajaran' => [
+                'pct'      => $pelajaranPct,
+                'selesai'  => $dibaca,
+                'total'    => $jumlahMateri,
+            ],
+            'quiz' => [
+                'pct'      => $quizPct,
+                'selesai'  => $quizSelesai,
+                'total'    => $jumlahMateri,
+            ],
+            'nilai' => [
+                'pct' => $avgNilai,
+                'avg' => $avgNilai,
+            ],
         ];
     }
 
     private function warna($slug): string
     {
-        return match($slug) {
+        return match ($slug) {
             'java'   => '#3B82F6',
             'python' => '#F59E0B',
             'php'    => '#22C55E',

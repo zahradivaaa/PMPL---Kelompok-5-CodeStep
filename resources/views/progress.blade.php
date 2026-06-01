@@ -265,11 +265,11 @@
                     <polyline points="6 9 12 15 18 9"/>
                 </svg>
             </div>
-<div class="nav-sub" id="kategoriSub">
-    <a href="{{ route('kategori.show', 'java') }}" class="nav-item">Java</a>
-    <a href="{{ route('kategori.show', 'python') }}" class="nav-item">Python</a>
-    <a href="{{ route('kategori.show', 'php') }}" class="nav-item">PHP</a>
-</div>
+            <div class="nav-sub" id="kategoriSub">
+                <a href="{{ route('kategori.show', 'java') }}" class="nav-item">Java</a>
+                <a href="{{ route('kategori.show', 'python') }}" class="nav-item">Python</a>
+                <a href="{{ route('kategori.show', 'php') }}" class="nav-item">PHP</a>
+            </div>
         </nav>
         <div class="sidebar-footer">
             <form method="POST" action="{{ route('logout') }}">
