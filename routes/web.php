@@ -31,4 +31,9 @@ Route::get('/kategori/{slug}', [KategoriController::class, 'show'])
     ->middleware(['auth', 'verified'])
     ->name('kategori.show');
     
+// Route Guru
+Route::middleware(['auth', 'guru'])->prefix('guru')->name('guru.')->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\Guru\GuruDashboardController::class, 'index'])->name('dashboard');
+});
+
 require __DIR__.'/auth.php';
