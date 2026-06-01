@@ -23,7 +23,7 @@ class DashboardController extends Controller
                 // Lebih dari 1 hari tidak akses → reset streak
                 $user->streak = 1;
             }
-            $user->last_visit = $today;
+            $user->last_visit = now();
             $user->save();
         }
 
