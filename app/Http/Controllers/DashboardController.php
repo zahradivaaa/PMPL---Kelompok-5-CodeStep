@@ -11,21 +11,21 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        // ── Streak logic ──
-        $today = Carbon::today();
-        $lastVisit = $user->last_visit ? Carbon::parse($user->last_visit) : null;
+       // ── Streak logic ──
+$today = Carbon::today();
+$lastVisit = $user->last_visit ? Carbon::parse($user->last_visit)->startOfDay() : null;
 
-        if (!$lastVisit || $lastVisit->lt($today)) {
-            if ($lastVisit && $lastVisit->diffInDays($today) === 1) {
-                // Kunjungan hari berikutnya → streak naik
-                $user->streak = $user->streak + 1;
-            } elseif (!$lastVisit || $lastVisit->diffInDays($today) > 1) {
-                // Lebih dari 1 hari tidak akses → reset streak
-                $user->streak = 1;
-            }
-            $user->last_visit = now();
-            $user->save();
-        }
+if (!$lastVisit || $lastVisit->lt($today)) {
+    if ($lastVisit && $lastVisit->diffInDays($today) === 1) {
+        // Kunjungan hari berikutnya → streak naik
+        $user->streak = $user->streak + 1;
+    } elseif (!$lastVisit || $lastVisit->diffInDays($today) > 1) {
+        // Lebih dari 1 hari tidak akses → reset streak
+        $user->streak = 1;
+    }
+    $user->last_visit = now();
+    $user->save();
+}
 
         // ── Weekly visits (S M T W T F S) ──
         $weekly = $user->weekly_visits ?? [];
