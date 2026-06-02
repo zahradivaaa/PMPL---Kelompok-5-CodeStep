@@ -467,7 +467,6 @@
                             <th>Username</th>
                             <th>Streak</th>
                             <th>Status</th>
-                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -493,7 +492,6 @@
                             <td style="color:var(--text-muted)">{{ $s->username }}</td>
                             <td>🔥 {{ $streak }} days</td>
                             <td><span class="badge {{ $status }}">{{ $label }}</span></td>
-                            <td><button class="btn-detail">Lihat Detail</button></td>
                         </tr>
                         @empty
                         <tr>
