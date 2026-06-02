@@ -352,7 +352,7 @@
                 Dashboard
             </a>
 
-            <a href="{{ route('guru.siswa') }}" class="nav-item">
+            <a href="#" class="nav-item">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
                     <circle cx="9" cy="7" r="4"/>
@@ -417,7 +417,7 @@
                 if (count($nameParts) > 1) $initials .= strtoupper(substr($nameParts[1], 0, 1));
             @endphp
 
-            <a href="{{ route('guru.profile') }}" class="avatar-btn">
+            <a href="#" class="avatar-btn">
                 <div class="avatar-circle">{{ $initials }}</div>
                 <span class="username">{{ Auth::user()->name }}</span>
             </a>
@@ -467,6 +467,7 @@
                             <th>Username</th>
                             <th>Streak</th>
                             <th>Status</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -492,6 +493,7 @@
                             <td style="color:var(--text-muted)">{{ $s->username }}</td>
                             <td>🔥 {{ $streak }} days</td>
                             <td><span class="badge {{ $status }}">{{ $label }}</span></td>
+                            <td><button class="btn-detail">Lihat Detail</button></td>
                         </tr>
                         @empty
                         <tr>
