@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $kategori->nama }} – CodeStep</title>
+    <title>{{ $materi->judul }} – CodeStep</title>
     @vite(['resources/css/welcome.css', 'resources/js/app.js'])
     <style>
         :root {
@@ -17,43 +17,27 @@
             --white:      #FFFFFF;
             --sidebar-w:  260px;
             --topbar-h:   60px;
-            --radius:     12px;
         }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #EFF6FF;
-            min-height: 100vh;
-            margin: 0;
-        }
-
+        body { font-family: 'Poppins', sans-serif; background: #F1F5F9; min-height: 100vh; margin: 0; }
         a { text-decoration: none; color: inherit; }
         .shell { display: flex; min-height: 100vh; }
 
-        /* ── Sidebar ── */
+        /* Sidebar */
         .sidebar {
-            width: var(--sidebar-w);
-            background: var(--white);
+            width: var(--sidebar-w); background: var(--white);
             border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            top: 0; left: 0; bottom: 0;
-            z-index: 200;
-            transition: transform .3s ease;
+            display: flex; flex-direction: column;
+            position: fixed; top: 0; left: 0; bottom: 0;
+            z-index: 200; transition: transform .3s ease;
         }
-        .sidebar-logo {
-            padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid var(--border);
-        }
+        .sidebar-logo { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); }
         .sidebar-logo img { height: 44px; object-fit: contain; }
         .sidebar-nav { flex: 1; padding: 1.25rem .75rem; overflow-y: auto; }
-
         .nav-item {
             display: flex; align-items: center; gap: .75rem;
             padding: .7rem 1rem; border-radius: 10px;
-            font-size: .9rem; font-weight: 500;
-            color: var(--text-muted);
+            font-size: .9rem; font-weight: 500; color: var(--text-muted);
             transition: all .2s; margin-bottom: .2rem;
         }
         .nav-item:hover { background: var(--blue-light); color: var(--blue); }
@@ -83,30 +67,24 @@
             padding: .7rem 1rem; border-radius: 10px;
             font-size: .9rem; font-weight: 600; color: #EF4444;
             background: none; border: none; width: 100%;
-            cursor: pointer; transition: all .2s;
-            font-family: 'Poppins', sans-serif;
+            cursor: pointer; transition: all .2s; font-family: 'Poppins', sans-serif;
         }
         .logout-btn:hover { background: #FEE2E2; }
         .logout-btn svg { width: 20px; height: 20px; }
 
-        /* ── Main ── */
-        .main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; }
+        /* Main */
+        .main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
 
-        /* ── Topbar ── */
+        /* Topbar */
         .topbar {
-            height: var(--topbar-h);
-            border-bottom: 1px solid var(--border);
-            background: var(--white);
-            display: flex; align-items: center;
-            justify-content: flex-end;
-            padding: 0 2rem;
+            height: var(--topbar-h); border-bottom: 1px solid var(--border);
+            background: var(--white); display: flex; align-items: center;
+            justify-content: flex-end; padding: 0 2rem;
             position: sticky; top: 0; z-index: 100; gap: 1rem;
         }
-        .avatar-btn {
-            display: flex; align-items: center; gap: .6rem;
-            background: none; border: none; cursor: pointer;
-            font-family: 'Poppins', sans-serif; text-decoration: none;
-        }
+        .hamburger { display: none; background: none; border: none; cursor: pointer; margin-right: auto; }
+        .hamburger svg { width: 24px; height: 24px; }
+        .avatar-btn { display: flex; align-items: center; gap: .6rem; background: none; border: none; cursor: pointer; font-family: 'Poppins', sans-serif; text-decoration: none; }
         .avatar-circle {
             width: 36px; height: 36px; border-radius: 50%;
             background: linear-gradient(135deg, var(--blue), var(--blue-dark));
@@ -114,88 +92,67 @@
             color: white; font-size: .85rem; font-weight: 700;
         }
         .username { font-weight: 600; color: var(--blue); font-size: .95rem; }
-        .hamburger { display: none; background: none; border: none; cursor: pointer; margin-right: auto; }
-        .hamburger svg { width: 24px; height: 24px; }
 
-        /* ── Page content ── */
-        .page-content { flex: 1; padding: 2rem; max-width: 900px; }
+        /* Page content */
+        .page-content { flex: 1; padding: 2rem; max-width: 960px; }
 
-        /* ── Breadcrumb ── */
-        .breadcrumb {
-            font-size: .85rem; color: var(--text-muted);
-            margin-bottom: 1.5rem;
-        }
+        /* Breadcrumb */
+        .breadcrumb { font-size: .85rem; color: var(--text-muted); margin-bottom: 1.5rem; }
         .breadcrumb a { color: var(--text-muted); }
         .breadcrumb a:hover { color: var(--blue); }
 
-        /* ── Judul kategori ── */
-        .kategori-title {
-            font-size: 1.75rem; font-weight: 800;
-            color: var(--text); margin-bottom: 1.5rem;
+        /* Judul */
+        .materi-title { font-size: 1.5rem; font-weight: 800; color: var(--text); margin-bottom: .5rem; }
+        .materi-desc { font-size: .9rem; color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.7; }
+
+        /* Badge sudah dibaca */
+        .badge-dibaca {
+            display: inline-flex; align-items: center; gap: .4rem;
+            background: #DCFCE7; color: #16A34A;
+            border-radius: 99px; padding: .3rem .875rem;
+            font-size: .8rem; font-weight: 600; margin-bottom: 1.5rem;
         }
 
-        /* ── Info umum card ── */
-        .info-card {
-            background: var(--white);
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            margin-bottom: 1.5rem;
-            overflow: hidden;
+        /* PDF viewer */
+        .pdf-card {
+            background: var(--white); border: 1.5px solid var(--border);
+            border-radius: 16px; overflow: hidden; margin-bottom: 1.5rem;
         }
-        .info-header {
+        .pdf-header {
+            padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
             display: flex; align-items: center; gap: .75rem;
-            padding: 1rem 1.5rem;
-            cursor: pointer;
-            user-select: none;
-            font-weight: 600; font-size: .95rem;
+            font-weight: 600; font-size: .95rem; color: var(--text);
         }
-        .info-header .chevron {
-            width: 28px; height: 28px; border-radius: 6px;
-            background: var(--blue-light);
-            display: flex; align-items: center; justify-content: center;
-            transition: transform .3s;
-        }
-        .info-header .chevron svg { width: 16px; height: 16px; color: var(--blue); }
-        .info-header.open .chevron { transform: rotate(0deg); }
-        .info-body {
-            padding: 1.5rem;
-            border-top: 1px solid var(--border);
-            display: none;
-        }
-        .info-body.open { display: block; }
-        .info-body h3 { text-align: center; font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; }
-        .info-body p { font-size: .9rem; line-height: 1.8; color: var(--text-muted); }
+        .pdf-header svg { width: 20px; height: 20px; color: var(--blue); }
+        .pdf-viewer { width: 100%; height: 70vh; border: none; display: block; }
 
-        /* ── Materi list ── */
-        .materi-list { display: flex; flex-direction: column; gap: .75rem; }
-        .materi-item {
-            display: flex; align-items: center;
+        /* Navigasi materi */
+        .nav-materi {
+            display: flex; justify-content: space-between;
+            gap: 1rem; margin-bottom: 2rem;
+        }
+        .btn-nav {
+            display: flex; align-items: center; gap: .5rem;
+            padding: .75rem 1.5rem; border-radius: 12px;
+            font-size: .875rem; font-weight: 600;
+            font-family: 'Poppins', sans-serif; cursor: pointer;
+            transition: all .2s; text-decoration: none;
+        }
+        .btn-prev {
+            border: 1.5px solid var(--border); color: var(--text-muted);
             background: var(--white);
-            border: 1.5px solid var(--border);
-            border-radius: 12px;
-            padding: 1rem 1.25rem;
-            font-size: .95rem; font-weight: 600;
-            color: var(--text);
-            cursor: pointer;
-            transition: all .2s;
-            text-decoration: none;
         }
-        .materi-item:hover:not(.terkunci) {
-            border-color: var(--blue);
-            box-shadow: 0 2px 12px rgba(59,130,246,.12);
+        .btn-prev:hover { border-color: var(--blue); color: var(--blue); }
+        .btn-next {
+            background: var(--blue); color: white; border: none;
+            margin-left: auto;
         }
-        .materi-item.terkunci {
-            color: var(--text-muted);
-            cursor: not-allowed;
-            background: #F8FAFC;
-        }
-        .materi-item .icon-kunci { margin-left: .5rem; font-size: .85rem; }
+        .btn-next:hover { background: var(--blue-dark); }
+        .btn-next:disabled { background: #94A3B8; cursor: not-allowed; }
 
-        /* ── Responsive ── */
-        .sidebar-overlay {
-            display: none; position: fixed; inset: 0;
-            background: rgba(0,0,0,.4); z-index: 150;
-        }
+        /* Sidebar overlay mobile */
+        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 150; }
+
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); }
             .sidebar.open { transform: translateX(0); }
@@ -203,6 +160,7 @@
             .hamburger { display: flex; }
             .sidebar-overlay.open { display: block; }
             .page-content { padding: 1.25rem 1rem; }
+            .pdf-viewer { height: 50vh; }
         }
     </style>
 </head>
@@ -273,12 +231,12 @@
                     <line x1="3" y1="18" x2="21" y2="18"/>
                 </svg>
             </button>
+            @php
+                $nameParts = explode(' ', Auth::user()->name);
+                $initials = strtoupper(substr($nameParts[0], 0, 1));
+                if (count($nameParts) > 1) $initials .= strtoupper(substr($nameParts[1], 0, 1));
+            @endphp
             <a href="{{ route('profile.edit') }}" class="avatar-btn">
-                @php
-                    $nameParts = explode(' ', Auth::user()->name);
-                    $initials = strtoupper(substr($nameParts[0], 0, 1));
-                    if (count($nameParts) > 1) $initials .= strtoupper(substr($nameParts[1], 0, 1));
-                @endphp
                 <div class="avatar-circle">{{ $initials }}</div>
                 <span class="username">{{ Auth::user()->name }}</span>
             </a>
@@ -289,46 +247,69 @@
             {{-- Breadcrumb --}}
             <div class="breadcrumb">
                 <a href="{{ route('dashboard') }}">Dashboard</a> /
-                <span>{{ $kategori->nama }}</span>
+                <a href="{{ route('kategori.show', $kategori->slug) }}">{{ $kategori->nama }}</a> /
+                <span>{{ $materi->judul }}</span>
             </div>
 
-            {{-- Judul --}}
-            <h1 class="kategori-title">{{ $kategori->nama }}</h1>
+            {{-- Judul & deskripsi --}}
+            <h1 class="materi-title">{{ $materi->judul }}</h1>
+            @if($materi->deskripsi)
+                <p class="materi-desc">{{ $materi->deskripsi }}</p>
+            @endif
 
-            {{-- Info Umum --}}
-            <div class="info-card">
-                <div class="info-header open" id="infoHeader" onclick="toggleInfo()">
-                    <div class="chevron">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                            <polyline points="6 9 12 15 18 9"/>
+            {{-- Badge sudah dibaca --}}
+            <div class="badge-dibaca">
+                ✅ Materi sudah dibaca
+            </div>
+
+            {{-- PDF Viewer --}}
+            @if($materi->file_pdf)
+                <div class="pdf-card">
+                    <div class="pdf-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
                         </svg>
+                        {{ basename($materi->file_pdf) }}
                     </div>
-                    Informasi umum
+                    <iframe
+                        src="{{ Storage::url($materi->file_pdf) }}"
+                        class="pdf-viewer"
+                        type="application/pdf">
+                    </iframe>
                 </div>
-                <div class="info-body open" id="infoBody">
-                    <h3>{{ $kategori->nama }}</h3>
-                    <p>{{ $kategori->deskripsi }}</p>
+            @else
+                <div style="background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:3rem;text-align:center;color:var(--text-muted);margin-bottom:1.5rem;">
+                    📄 Belum ada file PDF untuk materi ini.
                 </div>
-            </div>
+            @endif
 
-            {{-- Daftar Materi --}}
-            <div class="materi-list">
-                @forelse($materis as $index => $materi)
-                    @if($materi->terkunci)
-                        <div class="materi-item terkunci">
-                            {{ $index + 1 }}. {{ $materi->judul }}
-                            <span class="icon-kunci">🔑</span>
-                        </div>
-                    @else
-                        <a href="{{ route('materi.baca', $materi->id) }}" class="materi-item">
-    {{ $index + 1 }}. {{ $materi->judul }}
-</a>
-                    @endif
-                @empty
-                    <div style="text-align:center;color:var(--text-muted);padding:2rem;">
-                        Belum ada materi untuk kategori ini.
-                    </div>
-                @endforelse
+            {{-- Navigasi materi --}}
+            @php
+                $semuaMateri = $kategori->materis()->orderBy('urutan')->get();
+                $currentIndex = $semuaMateri->search(fn($m) => $m->id === $materi->id);
+                $materiSebelumnya = $currentIndex > 0 ? $semuaMateri->get($currentIndex - 1) : null;
+                $materiSelanjutnya = $semuaMateri->get($currentIndex + 1);
+            @endphp
+
+            <div class="nav-materi">
+                @if($materiSebelumnya)
+                    <a href="{{ route('materi.baca', $materiSebelumnya->id) }}" class="btn-nav btn-prev">
+                        ← {{ $materiSebelumnya->judul }}
+                    </a>
+                @else
+                    <div></div>
+                @endif
+
+                @if($materiSelanjutnya)
+                    <a href="{{ route('materi.baca', $materiSelanjutnya->id) }}" class="btn-nav btn-next">
+                        {{ $materiSelanjutnya->judul }} →
+                    </a>
+                @else
+                    <a href="{{ route('kategori.show', $kategori->slug) }}" class="btn-nav btn-next">
+                        Kembali ke {{ $kategori->nama }} →
+                    </a>
+                @endif
             </div>
 
         </div>
@@ -336,10 +317,6 @@
 </div>
 
 <script>
-    function toggleInfo() {
-        document.getElementById('infoHeader').classList.toggle('open');
-        document.getElementById('infoBody').classList.toggle('open');
-    }
     function toggleKategori() {
         document.getElementById('kategoriToggle').classList.toggle('open');
         document.getElementById('kategoriSub').classList.toggle('open');

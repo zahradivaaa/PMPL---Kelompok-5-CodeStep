@@ -43,4 +43,35 @@ class KategoriController extends Controller
 
         return view('kategori.show', compact('kategori', 'materis'));
     }
+
+    // Halaman baca materi + otomatis catat sudah dibaca
+    public function baca(\App\Models\Materi $materi)
+    {
+        $user = Auth::user();
+
+        // Cek apakah materi ini terkunci
+        $kategori = $materi->kategori;
+        $semuaMateri = $kategori->materis()->orderBy('urutan')->get();
+        $index = $semuaMateri->search(fn($m) => $m->id === $materi->id);
+
+        if ($index > 0) {
+            $materiSebelumnya = $semuaMateri->get($index - 1);
+            $progressSebelumnya = StudentProgress::where('user_id', $user->id)
+                ->where('materi_id', $materiSebelumnya->id)
+                ->first();
+
+            if (!$progressSebelumnya || !$progressSebelumnya->materi_dibaca) {
+                return redirect()->route('kategori.show', $kategori->slug)
+                    ->with('error', 'Selesaikan materi sebelumnya terlebih dahulu!');
+            }
+        }
+
+        // Otomatis catat sudah dibaca
+        StudentProgress::updateOrCreate(
+            ['user_id' => $user->id, 'materi_id' => $materi->id],
+            ['materi_dibaca' => true]
+        );
+
+        return view('materi.baca', compact('materi', 'kategori'));
+    }
 }

@@ -30,12 +30,21 @@ Route::middleware('auth')->group(function () {
 Route::get('/kategori/{slug}', [KategoriController::class, 'show'])
     ->middleware(['auth', 'verified'])
     ->name('kategori.show');
+
+Route::get('/materi/{materi}', [KategoriController::class, 'baca'])
+    ->middleware(['auth', 'verified'])
+    ->name('materi.baca');
     
 // Route Guru
 Route::middleware(['auth', 'guru'])->prefix('guru')->name('guru.')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\Guru\GuruDashboardController::class, 'index'])->name('dashboard');
     Route::get('/siswa', [App\Http\Controllers\Guru\GuruSiswaController::class, 'index'])->name('siswa');
     Route::get('/profile', [App\Http\Controllers\Guru\GuruProfileController::class, 'index'])->name('profile');
+    //Materi
+    Route::get('/materi', [App\Http\Controllers\Guru\GuruMateriController::class, 'index'])->name('materi');
+    Route::post('/materi', [App\Http\Controllers\Guru\GuruMateriController::class, 'store'])->name('materi.store');
+    Route::put('/materi/{materi}', [App\Http\Controllers\Guru\GuruMateriController::class, 'update'])->name('materi.update');
+    Route::delete('/materi/{materi}', [App\Http\Controllers\Guru\GuruMateriController::class, 'destroy'])->name('materi.destroy');
 });
 
 
