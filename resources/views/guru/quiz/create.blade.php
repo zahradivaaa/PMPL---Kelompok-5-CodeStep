@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Guru - CodeStep</title>
+    <title>Buat Quiz - CodeStep</title>
     @vite(['resources/css/welcome.css', 'resources/js/app.js'])
     <style>
         :root {
@@ -136,11 +136,6 @@
             box-shadow: 0 2px 10px rgba(59,130,246,.4);
         }
         .topbar .username { font-weight: 600; color: var(--blue); font-size: .95rem; }
-        .topbar .role-badge {
-            font-size: .75rem; background: var(--blue-light);
-            color: var(--blue); padding: .2rem .6rem;
-            border-radius: 99px; font-weight: 600;
-        }
 
         /* ── Page content ── */
         .page-content { flex: 1; padding: 2rem; }
@@ -149,132 +144,107 @@
             font-size: 1.75rem; font-weight: 800;
             color: var(--blue-dark); margin-bottom: .25rem;
         }
-        .page-subheading {
-            font-size: .9rem; color: var(--text-muted); margin-bottom: 1.75rem;
-        }
 
-        /* ── Stat cards ── */
-        .stat-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.25rem;
-            margin-bottom: 1.75rem;
+        /* Breadcrumb */
+        .breadcrumb {
+            display: flex; align-items: center; gap: .4rem;
+            font-size: .85rem; color: var(--text-muted); margin-bottom: 1.75rem;
         }
-        .stat-card {
+        .breadcrumb a { color: var(--blue); font-weight: 500; }
+        .breadcrumb a:hover { text-decoration: underline; }
+        .breadcrumb span { color: var(--text-muted); }
+
+        /* ── Form card ── */
+        .form-card {
             background: var(--white);
             border: 1.5px solid var(--border);
             border-radius: 16px;
-            padding: 1.5rem;
-            display: flex; align-items: center; gap: 1rem;
-        }
-        .stat-icon {
-            width: 48px; height: 48px; border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem; flex-shrink: 0;
-        }
-        .stat-icon.blue  { background: var(--blue-light); }
-        .stat-icon.green { background: #DCFCE7; }
-        .stat-icon.yellow { background: #FEF9C3; }
-        .stat-info .stat-value {
-            font-size: 1.75rem; font-weight: 800; color: var(--text);
-        }
-        .stat-info .stat-label {
-            font-size: .8rem; color: var(--text-muted); font-weight: 500;
-        }
-
-        /* ── Table ── */
-        .table-card {
-            background: var(--white);
-            border: 1.5px solid var(--border);
-            border-radius: 16px;
-            overflow: hidden;
+            padding: 2rem;
             margin-bottom: 2rem;
         }
-        .table-header {
-            padding: 1.25rem 1.5rem;
-            display: flex; align-items: center; justify-content: space-between;
-            border-bottom: 1px solid var(--border);
-        }
-        .table-header h2 {
-            font-size: 1rem; font-weight: 700; color: var(--blue-dark);
-        }
-        .search-input {
-            border: 1.5px solid var(--border); border-radius: 10px;
-            padding: .5rem 1rem; font-size: .85rem;
-            font-family: 'Poppins', sans-serif;
-            outline: none; transition: border .2s;
-            width: 200px;
-        }
-        .search-input:focus { border-color: var(--blue); }
 
-        table { width: 100%; border-collapse: collapse; }
-        thead th {
-            background: #F8FAFC;
-            padding: .875rem 1.25rem;
-            text-align: left;
-            font-size: .8rem; font-weight: 600;
-            color: var(--text-muted);
-            border-bottom: 1px solid var(--border);
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
         }
-        tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
-        tbody tr:last-child { border-bottom: none; }
-        tbody tr:hover { background: #F8FAFC; }
-        tbody td { padding: 1rem 1.25rem; font-size: .875rem; color: var(--text); }
+        .form-group { display: flex; flex-direction: column; gap: .4rem; }
+        .form-group.full { grid-column: 1 / -1; }
 
-        .avatar-sm {
-            width: 32px; height: 32px; border-radius: 50%;
-            background: linear-gradient(135deg, var(--blue), var(--blue-dark));
-            display: inline-flex; align-items: center; justify-content: center;
-            color: white; font-size: .75rem; font-weight: 700;
-            margin-right: .5rem;
+        .form-label {
+            font-size: .82rem; font-weight: 600;
+            color: var(--text-muted); letter-spacing: .3px;
         }
-        .nama-cell { display: flex; align-items: center; }
 
-        .progress-bar-wrap {
-            display: flex; align-items: center; gap: .5rem;
-        }
-        .bar-bg {
-            flex: 1; background: #F1F5F9;
-            border-radius: 99px; height: 6px; overflow: hidden;
-            min-width: 80px;
-        }
-        .bar-fill { height: 100%; border-radius: 99px; background: var(--blue); }
-        .pct-text { font-size: .8rem; font-weight: 600; color: var(--blue); min-width: 36px; }
-
-        .badge {
-            display: inline-block; padding: .25rem .75rem;
-            border-radius: 99px; font-size: .75rem; font-weight: 600;
-        }
-        .badge.aktif      { background: #DCFCE7; color: #16A34A; }
-        .badge.kurang     { background: #FEF9C3; color: #B45309; }
-        .badge.tidak      { background: #FEE2E2; color: #DC2626; }
-
-        .btn-detail {
-            border: 1.5px solid var(--blue); color: var(--blue);
-            background: none; border-radius: 8px;
-            padding: .35rem .875rem; font-size: .8rem;
-            font-family: 'Poppins', sans-serif; font-weight: 600;
-            cursor: pointer; transition: all .2s;
-        }
-        .btn-detail:hover { background: var(--blue); color: white; }
-
-        /* Pagination */
-        .pagination {
-            display: flex; justify-content: center;
-            align-items: center; gap: .5rem;
-            padding: 1.25rem;
-        }
-        .page-btn {
-            width: 34px; height: 34px; border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: .85rem; font-weight: 600;
+        .form-control {
             border: 1.5px solid var(--border);
-            background: none; cursor: pointer;
+            border-radius: 10px;
+            padding: .6rem .9rem;
+            font-size: .875rem;
             font-family: 'Poppins', sans-serif;
-            color: var(--text-muted); transition: all .2s;
+            color: var(--text);
+            background: var(--white);
+            outline: none;
+            transition: border .2s, box-shadow .2s;
+            width: 100%;
+            box-sizing: border-box;
         }
-        .page-btn.active { background: var(--blue); color: white; border-color: var(--blue); }
-        .page-btn:hover:not(.active) { border-color: var(--blue); color: var(--blue); }
+        .form-control:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(59,130,246,.12);
+        }
+        .form-control.is-invalid { border-color: var(--red); }
+        textarea.form-control { resize: vertical; min-height: 90px; }
+
+        .invalid-feedback {
+            font-size: .78rem; color: var(--red); margin-top: .2rem;
+        }
+
+        /* Radio group */
+        .radio-group { display: flex; flex-direction: column; gap: .6rem; margin-top: .2rem; }
+        .radio-item {
+            display: flex; align-items: center; gap: .6rem;
+            font-size: .875rem; color: var(--text); cursor: pointer;
+        }
+        .radio-item input[type="radio"] { accent-color: var(--blue); width: 15px; height: 15px; }
+
+        /* Duration */
+        .duration-wrap { display: flex; align-items: center; gap: .75rem; }
+        .duration-wrap .form-control { width: 100px; }
+        .duration-unit { font-size: .875rem; color: var(--text-muted); font-weight: 500; }
+
+        /* Buttons */
+        .btn-row {
+            display: flex; justify-content: flex-end; gap: .75rem;
+            margin-top: 1.75rem; padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+        .btn-cancel {
+            padding: .6rem 1.4rem; border-radius: 10px;
+            border: 1.5px solid var(--border); background: var(--white);
+            font-size: .875rem; font-family: 'Poppins', sans-serif;
+            font-weight: 600; color: var(--text-muted);
+            cursor: pointer; transition: all .2s; text-decoration: none;
+            display: inline-flex; align-items: center;
+        }
+        .btn-cancel:hover { border-color: var(--text-muted); color: var(--text); }
+
+        .btn-primary {
+            padding: .6rem 1.4rem; border-radius: 10px;
+            background: var(--blue); color: var(--white);
+            border: none; font-size: .875rem;
+            font-family: 'Poppins', sans-serif; font-weight: 600;
+            cursor: pointer; transition: background .2s;
+            display: inline-flex; align-items: center; gap: .4rem;
+        }
+        .btn-primary:hover { background: var(--blue-dark); }
+        .btn-primary svg { width: 16px; height: 16px; }
+
+        /* Sidebar overlay mobile */
+        .sidebar-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,.4); z-index: 150;
+        }
 
         /* Footer */
         .dash-footer {
@@ -307,16 +277,6 @@
             border-top: 1px solid var(--border);
         }
 
-        /* Sidebar overlay mobile */
-        .sidebar-overlay {
-            display: none; position: fixed; inset: 0;
-            background: rgba(0,0,0,.4); z-index: 150;
-        }
-
-        @media (max-width: 900px) {
-            .stat-grid { grid-template-columns: repeat(2, 1fr); }
-            .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
-        }
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); }
             .sidebar.open { transform: translateX(0); }
@@ -324,11 +284,10 @@
             .topbar .hamburger { display: flex; }
             .sidebar-overlay.open { display: block; }
             .page-content { padding: 1.25rem 1rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .form-group.full { grid-column: 1; }
             .dash-footer { margin: 0 -1rem; padding-left: 1rem; padding-right: 1rem; }
-        }
-        @media (max-width: 520px) {
-            .stat-grid { grid-template-columns: 1fr; }
-            .page-heading { font-size: 1.35rem; }
+            .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
         }
     </style>
 </head>
@@ -344,7 +303,7 @@
         </div>
 
         <nav class="sidebar-nav">
-            <a href="{{ route('guru.dashboard') }}" class="nav-item active">
+            <a href="{{ route('guru.dashboard') }}" class="nav-item">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
                     <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
@@ -362,7 +321,7 @@
                 Siswa
             </a>
 
-            <a href="{{ route('guru.materi') }}" class="nav-item" style="z-index:10;position:relative;">
+            <a href="{{ route('guru.materi') }}" class="nav-item">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                     <polyline points="14 2 14 8 20 8"/>
@@ -373,13 +332,21 @@
                 Materi
             </a>
 
-            <a href="{{ route('guru.quiz.index') }}" class="nav-item">
+            <a href="{{ route('guru.quiz.index') }}" class="nav-item active">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"/>
                     <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
                     <line x1="12" y1="17" x2="12.01" y2="17"/>
                 </svg>
                 Quiz
+            </a>
+
+            <a href="{{ route('guru.profile') }}" class="nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                Profil
             </a>
         </nav>
 
@@ -413,7 +380,7 @@
 
             @php
                 $nameParts = explode(' ', Auth::user()->name);
-                $initials = strtoupper(substr($nameParts[0], 0, 1));
+                $initials  = strtoupper(substr($nameParts[0], 0, 1));
                 if (count($nameParts) > 1) $initials .= strtoupper(substr($nameParts[1], 0, 1));
             @endphp
 
@@ -425,87 +392,152 @@
 
         <div class="page-content">
 
-            <h1 class="page-heading">Hai, {{ Auth::user()->name }}!</h1>
-            <p class="page-subheading">Kelola dan lihat data siswa kelas Anda.</p>
+            <h1 class="page-heading">Buat Quiz Baru</h1>
 
-            {{-- Stat cards --}}
-            <div class="stat-grid">
-                <div class="stat-card">
-                    <div class="stat-icon blue">👨‍🎓</div>
-                    <div class="stat-info">
-                        <div class="stat-value">{{ $siswa->count() }}</div>
-                        <div class="stat-label">Total Siswa</div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon green">✅</div>
-                    <div class="stat-info">
-                        <div class="stat-value">{{ $siswa->where('streak', '>', 0)->count() }}</div>
-                        <div class="stat-label">Siswa Aktif</div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon yellow">🔥</div>
-                    <div class="stat-info">
-                        <div class="stat-value">{{ $siswa->avg('streak') ? round($siswa->avg('streak')) : 0 }}</div>
-                        <div class="stat-label">Rata-rata Streak</div>
-                    </div>
-                </div>
+            {{-- Breadcrumb --}}
+            <div class="breadcrumb">
+                <a href="{{ route('guru.quiz.index') }}">Quiz</a>
+                <span>›</span>
+                <span>Buat Quiz</span>
             </div>
 
-            {{-- Tabel siswa --}}
-            <div class="table-card">
-                <div class="table-header">
-                    <h2>Daftar Siswa</h2>
-                    <input type="text" class="search-input" placeholder="Cari siswa..." id="searchInput" onkeyup="filterTable()">
-                </div>
-                <table id="siswaTable">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama Siswa</th>
-                            <th>Username</th>
-                            <th>Streak</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($siswa as $i => $s)
-                        @php
-                            $nameParts2 = explode(' ', $s->name);
-                            $ini2 = strtoupper(substr($nameParts2[0], 0, 1));
-                            if (count($nameParts2) > 1) $ini2 .= strtoupper(substr($nameParts2[1], 0, 1));
+            {{-- Form --}}
+            <div class="form-card">
+                <form action="{{ route('guru.quiz.store') }}" method="POST">
+                    @csrf
+                    <div class="form-grid">
 
-                            $streak = $s->streak ?? 0;
-                            if ($streak >= 5) { $status = 'aktif'; $label = 'Aktif'; }
-                            elseif ($streak >= 1) { $status = 'kurang'; $label = 'Kurang Aktif'; }
-                            else { $status = 'tidak'; $label = 'Tidak Aktif'; }
-                        @endphp
-                        <tr>
-                            <td>{{ $i + 1 }}</td>
-                            <td>
-                                <div class="nama-cell">
-                                    <div class="avatar-sm">{{ $ini2 }}</div>
-                                    {{ $s->name }}
-                                </div>
-                            </td>
-                            <td style="color:var(--text-muted)">{{ $s->username }}</td>
-                            <td>🔥 {{ $streak }} days</td>
-                            <td><span class="badge {{ $status }}">{{ $label }}</span></td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="6" style="text-align:center;color:var(--text-muted);padding:2rem;">
-                                Belum ada data siswa.
-                            </td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-                <div class="pagination">
-                    <button class="page-btn active">1</button>
-                    <button class="page-btn">›</button>
-                </div>
+                        {{-- Judul Quiz --}}
+                        <div class="form-group">
+                            <label class="form-label" for="judul">Judul Quiz</label>
+                            <input
+                                type="text"
+                                id="judul"
+                                name="judul"
+                                class="form-control @error('judul') is-invalid @enderror"
+                                placeholder="Contoh: Quiz HTML Dasar"
+                                value="{{ old('judul') }}"
+                            >
+                            @error('judul')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        {{-- Tanggal Mulai --}}
+                        <div class="form-group">
+                            <label class="form-label" for="tanggal_mulai">Tanggal Mulai</label>
+                            <input
+                                type="date"
+                                id="tanggal_mulai"
+                                name="tanggal_mulai"
+                                class="form-control @error('tanggal_mulai') is-invalid @enderror"
+                                value="{{ old('tanggal_mulai') }}"
+                            >
+                            @error('tanggal_mulai')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        {{-- Deskripsi --}}
+                        <div class="form-group full">
+                            <label class="form-label" for="deskripsi">Deskripsi</label>
+                            <textarea
+                                id="deskripsi"
+                                name="deskripsi"
+                                class="form-control @error('deskripsi') is-invalid @enderror"
+                                placeholder="Deskripsi singkat tentang quiz ini..."
+                            >{{ old('deskripsi') }}</textarea>
+                            @error('deskripsi')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        {{-- Deadline --}}
+                        <div class="form-group">
+                            <label class="form-label" for="deadline">Deadline</label>
+                            <input
+                                type="date"
+                                id="deadline"
+                                name="deadline"
+                                class="form-control @error('deadline') is-invalid @enderror"
+                                value="{{ old('deadline') }}"
+                            >
+                            @error('deadline')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        {{-- Status --}}
+                        <div class="form-group">
+                            <label class="form-label">Status</label>
+                            <div class="radio-group">
+                                <label class="radio-item">
+                                    <input type="radio" name="status" value="aktif" {{ old('status', 'aktif') == 'aktif' ? 'checked' : '' }}>
+                                    Aktif
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="status" value="draft" {{ old('status') == 'draft' ? 'checked' : '' }}>
+                                    Draft
+                                </label>
+                            </div>
+                            @error('status')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        {{-- Pilih Materi --}}
+                        <div class="form-group">
+                            <label class="form-label" for="materi_id">Pilih Materi</label>
+                            <select
+                                id="materi_id"
+                                name="materi_id"
+                                class="form-control @error('materi_id') is-invalid @enderror"
+                            >
+                                <option value="">-- Pilih Materi --</option>
+                                @foreach($materis as $materi)
+                                    <option value="{{ $materi->id }}" {{ old('materi_id') == $materi->id ? 'selected' : '' }}>
+                                        {{ $materi->judul }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('materi_id')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        {{-- Durasi --}}
+                        <div class="form-group">
+                            <label class="form-label" for="durasi">Durasi</label>
+                            <div class="duration-wrap">
+                                <input
+                                    type="number"
+                                    id="durasi"
+                                    name="durasi"
+                                    class="form-control @error('durasi') is-invalid @enderror"
+                                    placeholder="30"
+                                    min="1"
+                                    value="{{ old('durasi', 30) }}"
+                                >
+                                <span class="duration-unit">menit</span>
+                            </div>
+                            @error('durasi')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                    </div>
+
+                    {{-- Buttons --}}
+                    <div class="btn-row">
+                        <a href="{{ route('guru.quiz.index') }}" class="btn-cancel">Batal</a>
+                        <button type="submit" class="btn-primary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Simpan Quiz
+                        </button>
+                    </div>
+                </form>
             </div>
 
             {{-- Footer --}}
@@ -547,16 +579,13 @@
 </div>
 
 <script>
-    function openSidebar()  { document.getElementById('sidebar').classList.add('open'); document.getElementById('overlay').classList.add('open'); }
-    function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
-
-    function filterTable() {
-        const input = document.getElementById('searchInput').value.toLowerCase();
-        const rows = document.querySelectorAll('#siswaTable tbody tr');
-        rows.forEach(row => {
-            const text = row.textContent.toLowerCase();
-            row.style.display = text.includes(input) ? '' : 'none';
-        });
+    function openSidebar()  {
+        document.getElementById('sidebar').classList.add('open');
+        document.getElementById('overlay').classList.add('open');
+    }
+    function closeSidebar() {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('overlay').classList.remove('open');
     }
 </script>
 </body>

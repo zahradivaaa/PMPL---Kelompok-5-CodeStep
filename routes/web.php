@@ -45,7 +45,22 @@ Route::middleware(['auth', 'guru'])->prefix('guru')->name('guru.')->group(functi
     Route::post('/materi', [App\Http\Controllers\Guru\GuruMateriController::class, 'store'])->name('materi.store');
     Route::put('/materi/{materi}', [App\Http\Controllers\Guru\GuruMateriController::class, 'update'])->name('materi.update');
     Route::delete('/materi/{materi}', [App\Http\Controllers\Guru\GuruMateriController::class, 'destroy'])->name('materi.destroy');
-});
+    ///Quiz
+    Route::get('/quiz', [App\Http\Controllers\Guru\GuruQuizController::class, 'index'])->name('quiz.index');
+    Route::get('/quiz/create', [App\Http\Controllers\Guru\GuruQuizController::class, 'create'])->name('quiz.create');
+    Route::post('/quiz', [App\Http\Controllers\Guru\GuruQuizController::class, 'store'])->name('quiz.store');
+    Route::get('/quiz/{id}', [App\Http\Controllers\Guru\GuruQuizController::class, 'show'])->name('quiz.show');
+    Route::get('/quiz/{id}/edit', [App\Http\Controllers\Guru\GuruQuizController::class, 'edit'])->name('quiz.edit');
+    Route::put('/quiz/{id}', [App\Http\Controllers\Guru\GuruQuizController::class, 'update'])->name('quiz.update');
+    Route::delete('/quiz/{id}', [App\Http\Controllers\Guru\GuruQuizController::class, 'destroy'])->name('quiz.destroy');
+    Route::get('/quiz/{id}/hasil', [App\Http\Controllers\Guru\GuruQuizController::class, 'hasil'])->name('quiz.hasil');
+    Route::get('/quiz/{id}/export', [App\Http\Controllers\Guru\GuruQuizController::class, 'export'])->name('quiz.export');
+
+    // Soal
+    Route::post('/soal', [App\Http\Controllers\Guru\GuruSoalController::class, 'store'])->name('soal.store');
+    Route::put('/soal/{id}', [App\Http\Controllers\Guru\GuruSoalController::class, 'update'])->name('soal.update');
+    Route::delete('/soal/{id}', [App\Http\Controllers\Guru\GuruSoalController::class, 'destroy'])->name('soal.destroy');
+    });
 
 
 require __DIR__.'/auth.php';

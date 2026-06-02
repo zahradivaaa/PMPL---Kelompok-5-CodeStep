@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Guru - CodeStep</title>
+    <title>Quiz - CodeStep</title>
     @vite(['resources/css/welcome.css', 'resources/js/app.js'])
     <style>
         :root {
@@ -136,11 +136,6 @@
             box-shadow: 0 2px 10px rgba(59,130,246,.4);
         }
         .topbar .username { font-weight: 600; color: var(--blue); font-size: .95rem; }
-        .topbar .role-badge {
-            font-size: .75rem; background: var(--blue-light);
-            color: var(--blue); padding: .2rem .6rem;
-            border-radius: 99px; font-weight: 600;
-        }
 
         /* ── Page content ── */
         .page-content { flex: 1; padding: 2rem; }
@@ -153,36 +148,7 @@
             font-size: .9rem; color: var(--text-muted); margin-bottom: 1.75rem;
         }
 
-        /* ── Stat cards ── */
-        .stat-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.25rem;
-            margin-bottom: 1.75rem;
-        }
-        .stat-card {
-            background: var(--white);
-            border: 1.5px solid var(--border);
-            border-radius: 16px;
-            padding: 1.5rem;
-            display: flex; align-items: center; gap: 1rem;
-        }
-        .stat-icon {
-            width: 48px; height: 48px; border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem; flex-shrink: 0;
-        }
-        .stat-icon.blue  { background: var(--blue-light); }
-        .stat-icon.green { background: #DCFCE7; }
-        .stat-icon.yellow { background: #FEF9C3; }
-        .stat-info .stat-value {
-            font-size: 1.75rem; font-weight: 800; color: var(--text);
-        }
-        .stat-info .stat-label {
-            font-size: .8rem; color: var(--text-muted); font-weight: 500;
-        }
-
-        /* ── Table ── */
+        /* ── Table card ── */
         .table-card {
             background: var(--white);
             border: 1.5px solid var(--border);
@@ -194,10 +160,16 @@
             padding: 1.25rem 1.5rem;
             display: flex; align-items: center; justify-content: space-between;
             border-bottom: 1px solid var(--border);
+            gap: 1rem;
+            flex-wrap: wrap;
         }
         .table-header h2 {
             font-size: 1rem; font-weight: 700; color: var(--blue-dark);
         }
+        .table-header-right {
+            display: flex; align-items: center; gap: .75rem;
+        }
+
         .search-input {
             border: 1.5px solid var(--border); border-radius: 10px;
             padding: .5rem 1rem; font-size: .85rem;
@@ -206,6 +178,18 @@
             width: 200px;
         }
         .search-input:focus { border-color: var(--blue); }
+
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: .4rem;
+            background: var(--blue); color: var(--white);
+            border: none; border-radius: 10px;
+            padding: .55rem 1.1rem; font-size: .85rem;
+            font-family: 'Poppins', sans-serif; font-weight: 600;
+            cursor: pointer; transition: background .2s; white-space: nowrap;
+            text-decoration: none;
+        }
+        .btn-primary:hover { background: var(--blue-dark); }
+        .btn-primary svg { width: 16px; height: 16px; }
 
         table { width: 100%; border-collapse: collapse; }
         thead th {
@@ -221,42 +205,26 @@
         tbody tr:hover { background: #F8FAFC; }
         tbody td { padding: 1rem 1.25rem; font-size: .875rem; color: var(--text); }
 
-        .avatar-sm {
-            width: 32px; height: 32px; border-radius: 50%;
-            background: linear-gradient(135deg, var(--blue), var(--blue-dark));
-            display: inline-flex; align-items: center; justify-content: center;
-            color: white; font-size: .75rem; font-weight: 700;
-            margin-right: .5rem;
-        }
-        .nama-cell { display: flex; align-items: center; }
-
-        .progress-bar-wrap {
-            display: flex; align-items: center; gap: .5rem;
-        }
-        .bar-bg {
-            flex: 1; background: #F1F5F9;
-            border-radius: 99px; height: 6px; overflow: hidden;
-            min-width: 80px;
-        }
-        .bar-fill { height: 100%; border-radius: 99px; background: var(--blue); }
-        .pct-text { font-size: .8rem; font-weight: 600; color: var(--blue); min-width: 36px; }
-
         .badge {
             display: inline-block; padding: .25rem .75rem;
             border-radius: 99px; font-size: .75rem; font-weight: 600;
         }
-        .badge.aktif      { background: #DCFCE7; color: #16A34A; }
-        .badge.kurang     { background: #FEF9C3; color: #B45309; }
-        .badge.tidak      { background: #FEE2E2; color: #DC2626; }
+        .badge.aktif  { background: #DCFCE7; color: #16A34A; }
+        .badge.draft  { background: #FEF9C3; color: #B45309; }
 
-        .btn-detail {
-            border: 1.5px solid var(--blue); color: var(--blue);
-            background: none; border-radius: 8px;
-            padding: .35rem .875rem; font-size: .8rem;
-            font-family: 'Poppins', sans-serif; font-weight: 600;
+        /* Action buttons */
+        .action-wrap { display: flex; align-items: center; gap: .5rem; }
+        .btn-icon {
+            width: 32px; height: 32px; border-radius: 8px;
+            display: inline-flex; align-items: center; justify-content: center;
+            border: 1.5px solid var(--border); background: var(--white);
             cursor: pointer; transition: all .2s;
         }
-        .btn-detail:hover { background: var(--blue); color: white; }
+        .btn-icon svg { width: 15px; height: 15px; }
+        .btn-icon.edit:hover  { background: var(--blue-light); border-color: var(--blue); color: var(--blue); }
+        .btn-icon.del:hover   { background: #FEE2E2; border-color: var(--red); color: var(--red); }
+        .btn-icon.edit svg { stroke: var(--blue); }
+        .btn-icon.del  svg { stroke: var(--red); }
 
         /* Pagination */
         .pagination {
@@ -275,6 +243,18 @@
         }
         .page-btn.active { background: var(--blue); color: white; border-color: var(--blue); }
         .page-btn:hover:not(.active) { border-color: var(--blue); color: var(--blue); }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center; padding: 3rem 1rem;
+            color: var(--text-muted); font-size: .9rem;
+        }
+
+        /* Sidebar overlay mobile */
+        .sidebar-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,.4); z-index: 150;
+        }
 
         /* Footer */
         .dash-footer {
@@ -307,16 +287,14 @@
             border-top: 1px solid var(--border);
         }
 
-        /* Sidebar overlay mobile */
-        .sidebar-overlay {
-            display: none; position: fixed; inset: 0;
-            background: rgba(0,0,0,.4); z-index: 150;
+        /* Alert */
+        .alert {
+            padding: .875rem 1.25rem; border-radius: 10px;
+            font-size: .875rem; font-weight: 500; margin-bottom: 1.25rem;
         }
+        .alert.success { background: #DCFCE7; color: #16A34A; border: 1px solid #BBF7D0; }
+        .alert.error   { background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; }
 
-        @media (max-width: 900px) {
-            .stat-grid { grid-template-columns: repeat(2, 1fr); }
-            .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
-        }
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); }
             .sidebar.open { transform: translateX(0); }
@@ -325,10 +303,7 @@
             .sidebar-overlay.open { display: block; }
             .page-content { padding: 1.25rem 1rem; }
             .dash-footer { margin: 0 -1rem; padding-left: 1rem; padding-right: 1rem; }
-        }
-        @media (max-width: 520px) {
-            .stat-grid { grid-template-columns: 1fr; }
-            .page-heading { font-size: 1.35rem; }
+            .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
         }
     </style>
 </head>
@@ -344,7 +319,7 @@
         </div>
 
         <nav class="sidebar-nav">
-            <a href="{{ route('guru.dashboard') }}" class="nav-item active">
+            <a href="{{ route('guru.dashboard') }}" class="nav-item">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
                     <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
@@ -362,7 +337,7 @@
                 Siswa
             </a>
 
-            <a href="{{ route('guru.materi') }}" class="nav-item" style="z-index:10;position:relative;">
+            <a href="{{ route('guru.materi') }}" class="nav-item">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                     <polyline points="14 2 14 8 20 8"/>
@@ -373,7 +348,7 @@
                 Materi
             </a>
 
-            <a href="{{ route('guru.quiz.index') }}" class="nav-item">
+            <a href="{{ route('guru.quiz.index') }}" class="nav-item active">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"/>
                     <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
@@ -413,7 +388,7 @@
 
             @php
                 $nameParts = explode(' ', Auth::user()->name);
-                $initials = strtoupper(substr($nameParts[0], 0, 1));
+                $initials  = strtoupper(substr($nameParts[0], 0, 1));
                 if (count($nameParts) > 1) $initials .= strtoupper(substr($nameParts[1], 0, 1));
             @endphp
 
@@ -426,86 +401,115 @@
         <div class="page-content">
 
             <h1 class="page-heading">Hai, {{ Auth::user()->name }}!</h1>
-            <p class="page-subheading">Kelola dan lihat data siswa kelas Anda.</p>
+            <p class="page-subheading">Kelola quiz dan pantau hasil siswa.</p>
 
-            {{-- Stat cards --}}
-            <div class="stat-grid">
-                <div class="stat-card">
-                    <div class="stat-icon blue">👨‍🎓</div>
-                    <div class="stat-info">
-                        <div class="stat-value">{{ $siswa->count() }}</div>
-                        <div class="stat-label">Total Siswa</div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon green">✅</div>
-                    <div class="stat-info">
-                        <div class="stat-value">{{ $siswa->where('streak', '>', 0)->count() }}</div>
-                        <div class="stat-label">Siswa Aktif</div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon yellow">🔥</div>
-                    <div class="stat-info">
-                        <div class="stat-value">{{ $siswa->avg('streak') ? round($siswa->avg('streak')) : 0 }}</div>
-                        <div class="stat-label">Rata-rata Streak</div>
-                    </div>
-                </div>
-            </div>
+            {{-- Flash messages --}}
+            @if(session('success'))
+                <div class="alert success">{{ session('success') }}</div>
+            @endif
+            @if(session('error'))
+                <div class="alert error">{{ session('error') }}</div>
+            @endif
 
-            {{-- Tabel siswa --}}
+            {{-- Tabel Quiz --}}
             <div class="table-card">
                 <div class="table-header">
-                    <h2>Daftar Siswa</h2>
-                    <input type="text" class="search-input" placeholder="Cari siswa..." id="searchInput" onkeyup="filterTable()">
+                    <h2>Daftar Quiz</h2>
+                    <div class="table-header-right">
+                        <input
+                            type="text"
+                            class="search-input"
+                            placeholder="Cari quiz..."
+                            id="searchInput"
+                            onkeyup="filterTable()"
+                        >
+                        <a href="{{ route('guru.quiz.create') }}" class="btn-primary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="5" x2="12" y2="19"/>
+                                <line x1="5" y1="12" x2="19" y2="12"/>
+                            </svg>
+                            Buat Quiz
+                        </a>
+                    </div>
                 </div>
-                <table id="siswaTable">
+
+                <table id="quizTable">
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama Siswa</th>
-                            <th>Username</th>
-                            <th>Streak</th>
+                            <th>Judul Quiz</th>
+                            <th>Materi</th>
+                            <th>Jumlah Soal</th>
+                            <th>Deadline</th>
                             <th>Status</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($siswa as $i => $s)
-                        @php
-                            $nameParts2 = explode(' ', $s->name);
-                            $ini2 = strtoupper(substr($nameParts2[0], 0, 1));
-                            if (count($nameParts2) > 1) $ini2 .= strtoupper(substr($nameParts2[1], 0, 1));
-
-                            $streak = $s->streak ?? 0;
-                            if ($streak >= 5) { $status = 'aktif'; $label = 'Aktif'; }
-                            elseif ($streak >= 1) { $status = 'kurang'; $label = 'Kurang Aktif'; }
-                            else { $status = 'tidak'; $label = 'Tidak Aktif'; }
-                        @endphp
+                        @forelse($quizzes as $i => $quiz)
                         <tr>
                             <td>{{ $i + 1 }}</td>
+                            <td style="font-weight:600">{{ $quiz->judul }}</td>
+                            <td>{{ $quiz->materi->judul ?? '-' }}</td>
+
+                            <td>{{ \Carbon\Carbon::parse($quiz->deadline)->format('d F Y') }}</td>
                             <td>
-                                <div class="nama-cell">
-                                    <div class="avatar-sm">{{ $ini2 }}</div>
-                                    {{ $s->name }}
+                                <div class="action-wrap">
+                                    {{-- Edit --}}
+                                    <a href="{{ route('guru.quiz.edit', $quiz->id) }}" class="btn-icon edit" title="Edit">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                        </svg>
+                                    </a>
+                                    {{-- Delete --}}
+                                    <form action="{{ route('guru.quiz.destroy', $quiz->id) }}" method="POST" onsubmit="return confirmDelete()">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn-icon del" title="Hapus">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="3 6 5 6 21 6"/>
+                                                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                                                <path d="M10 11v6"/><path d="M14 11v6"/>
+                                                <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                                            </svg>
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
-                            <td style="color:var(--text-muted)">{{ $s->username }}</td>
-                            <td>🔥 {{ $streak }} days</td>
-                            <td><span class="badge {{ $status }}">{{ $label }}</span></td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" style="text-align:center;color:var(--text-muted);padding:2rem;">
-                                Belum ada data siswa.
+                            <td colspan="7">
+                                <div class="empty-state">
+                                    Belum ada quiz. <a href="{{ route('guru.quiz.create') }}" style="color:var(--blue);font-weight:600">Buat quiz pertama</a>
+                                </div>
                             </td>
                         </tr>
                         @endforelse
                     </tbody>
                 </table>
+
+                {{-- Pagination --}}
+                @if($quizzes instanceof \Illuminate\Pagination\LengthAwarePaginator)
                 <div class="pagination">
-                    <button class="page-btn active">1</button>
-                    <button class="page-btn">›</button>
+                    @if($quizzes->onFirstPage())
+                        <button class="page-btn" disabled>‹</button>
+                    @else
+                        <a href="{{ $quizzes->previousPageUrl() }}" class="page-btn">‹</a>
+                    @endif
+
+                    @for($p = 1; $p <= $quizzes->lastPage(); $p++)
+                        <a href="{{ $quizzes->url($p) }}" class="page-btn {{ $quizzes->currentPage() == $p ? 'active' : '' }}">{{ $p }}</a>
+                    @endfor
+
+                    @if($quizzes->hasMorePages())
+                        <a href="{{ $quizzes->nextPageUrl() }}" class="page-btn">›</a>
+                    @else
+                        <button class="page-btn" disabled>›</button>
+                    @endif
                 </div>
+                @endif
             </div>
 
             {{-- Footer --}}
@@ -547,16 +551,25 @@
 </div>
 
 <script>
-    function openSidebar()  { document.getElementById('sidebar').classList.add('open'); document.getElementById('overlay').classList.add('open'); }
-    function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
+    function openSidebar()  {
+        document.getElementById('sidebar').classList.add('open');
+        document.getElementById('overlay').classList.add('open');
+    }
+    function closeSidebar() {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('overlay').classList.remove('open');
+    }
 
     function filterTable() {
         const input = document.getElementById('searchInput').value.toLowerCase();
-        const rows = document.querySelectorAll('#siswaTable tbody tr');
+        const rows  = document.querySelectorAll('#quizTable tbody tr');
         rows.forEach(row => {
-            const text = row.textContent.toLowerCase();
-            row.style.display = text.includes(input) ? '' : 'none';
+            row.style.display = row.textContent.toLowerCase().includes(input) ? '' : 'none';
         });
+    }
+
+    function confirmDelete() {
+        return confirm('Yakin ingin menghapus quiz ini? Data tidak bisa dikembalikan.');
     }
 </script>
 </body>

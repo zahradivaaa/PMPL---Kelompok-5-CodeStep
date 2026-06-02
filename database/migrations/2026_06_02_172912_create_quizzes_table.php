@@ -9,14 +9,26 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('quizzes', function (Blueprint $table) {
+
             $table->id();
-            $table->foreignId('materi_id')->constrained('materis')->onDelete('cascade');
-            $table->string('pertanyaan');
-            $table->string('opsi_a');
-            $table->string('opsi_b');
-            $table->string('opsi_c');
-            $table->string('opsi_d');
-            $table->enum('jawaban_benar', ['a', 'b', 'c', 'd']);
+
+            $table->foreignId('materi_id')
+                ->constrained('materis')
+                ->onDelete('cascade');
+
+            $table->string('judul');
+
+            $table->text('deskripsi')->nullable();
+
+            $table->integer('durasi');
+
+            $table->dateTime('tanggal_mulai');
+
+            $table->dateTime('deadline');
+
+            $table->boolean('status')
+                ->default(true);
+
             $table->timestamps();
         });
     }

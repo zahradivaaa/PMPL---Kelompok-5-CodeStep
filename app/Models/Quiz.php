@@ -8,16 +8,25 @@ class Quiz extends Model
 {
     protected $fillable = [
         'materi_id',
-        'pertanyaan',
-        'opsi_a',
-        'opsi_b', 
-        'opsi_c',
-        'opsi_d',
-        'jawaban_benar',
+        'judul',
+        'deskripsi',
+        'durasi',
+        'tanggal_mulai',
+        'deadline',
     ];
 
     public function materi()
     {
         return $this->belongsTo(Materi::class);
+    }
+
+    public function soals()
+    {
+        return $this->hasMany(Soal::class);
+    }
+
+    public function hasilQuizs()
+    {
+        return $this->hasMany(HasilQuiz::class, 'quiz_id');
     }
 }
