@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Guru - CodeStep</title>
+    <title>Daftar Siswa – CodeStep</title>
     @vite(['resources/css/welcome.css', 'resources/js/app.js'])
     <style>
         :root {
@@ -12,7 +12,6 @@
             --blue-light: #EFF6FF;
             --green:      #22C55E;
             --yellow:     #F59E0B;
-            --red:        #EF4444;
             --text:       #1E293B;
             --text-muted: #64748B;
             --border:     #E2E8F0;
@@ -20,169 +19,66 @@
             --sidebar-w:  260px;
             --topbar-h:   60px;
         }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #F1F5F9;
-            min-height: 100vh;
-            margin: 0;
-        }
-
+        body { font-family: 'Poppins', sans-serif; background: #F1F5F9; min-height: 100vh; margin: 0; }
         a { text-decoration: none; color: inherit; }
-
         .shell { display: flex; min-height: 100vh; }
 
-        /* ── Sidebar ── */
+        /* Sidebar */
         .sidebar {
-            width: var(--sidebar-w);
-            background: var(--white);
+            width: var(--sidebar-w); background: var(--white);
             border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            top: 0; left: 0; bottom: 0;
-            z-index: 200;
-            transition: transform .3s ease;
+            display: flex; flex-direction: column;
+            position: fixed; top: 0; left: 0; bottom: 0;
+            z-index: 200; transition: transform .3s ease;
         }
-
-        .sidebar-logo {
-            padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid var(--border);
-        }
+        .sidebar-logo { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); }
         .sidebar-logo img { height: 44px; object-fit: contain; }
-
-        .sidebar-nav {
-            flex: 1;
-            padding: 1.25rem .75rem;
-            overflow-y: auto;
-        }
-
+        .sidebar-nav { flex: 1; padding: 1.25rem .75rem; overflow-y: auto; }
         .nav-item {
-            display: flex;
-            align-items: center;
-            gap: .75rem;
-            padding: .7rem 1rem;
-            border-radius: 10px;
-            font-size: .9rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            transition: all .2s;
-            margin-bottom: .2rem;
-            cursor: pointer;
+            display: flex; align-items: center; gap: .75rem;
+            padding: .7rem 1rem; border-radius: 10px;
+            font-size: .9rem; font-weight: 500; color: var(--text-muted);
+            transition: all .2s; margin-bottom: .2rem;
         }
         .nav-item:hover { background: var(--blue-light); color: var(--blue); }
         .nav-item.active { background: var(--blue); color: var(--white); font-weight: 600; }
         .nav-item svg { width: 20px; height: 20px; flex-shrink: 0; }
-
-        .sidebar-footer {
-            padding: 1rem .75rem 1.5rem;
-            border-top: 1px solid var(--border);
-        }
+        .sidebar-footer { padding: 1rem .75rem 1.5rem; border-top: 1px solid var(--border); }
         .logout-btn {
             display: flex; align-items: center; gap: .75rem;
             padding: .7rem 1rem; border-radius: 10px;
-            font-size: .9rem; font-weight: 600;
-            color: #EF4444;
+            font-size: .9rem; font-weight: 600; color: #EF4444;
             background: none; border: none; width: 100%;
-            cursor: pointer; transition: all .2s;
-            font-family: 'Poppins', sans-serif;
+            cursor: pointer; transition: all .2s; font-family: 'Poppins', sans-serif;
         }
         .logout-btn:hover { background: #FEE2E2; }
         .logout-btn svg { width: 20px; height: 20px; }
 
-        /* ── Main ── */
-        .main {
-            margin-left: var(--sidebar-w);
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+        /* Main */
+        .main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
 
-        /* ── Topbar ── */
+        /* Topbar */
         .topbar {
-            height: var(--topbar-h);
-            border-bottom: 1px solid var(--border);
-            background: var(--white);
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding: 0 2rem;
-            position: sticky; top: 0; z-index: 100;
-            gap: 1rem;
+            height: var(--topbar-h); border-bottom: 1px solid var(--border);
+            background: var(--white); display: flex; align-items: center;
+            justify-content: flex-end; padding: 0 2rem;
+            position: sticky; top: 0; z-index: 100; gap: 1rem;
         }
-        .topbar .hamburger {
-            display: none; background: none; border: none;
-            cursor: pointer; margin-right: auto;
-        }
+        .topbar .hamburger { display: none; background: none; border: none; cursor: pointer; margin-right: auto; }
         .topbar .hamburger svg { width: 24px; height: 24px; }
-
-        .avatar-btn {
-            display: flex; align-items: center; gap: .6rem;
-            background: none; border: none; cursor: pointer;
-            padding: 0; font-family: 'Poppins', sans-serif;
-            text-decoration: none;
-        }
+        .avatar-btn { display: flex; align-items: center; gap: .6rem; background: none; border: none; cursor: pointer; padding: 0; font-family: 'Poppins', sans-serif; text-decoration: none; }
         .avatar-circle {
             width: 36px; height: 36px; border-radius: 50%;
             background: linear-gradient(135deg, var(--blue), var(--blue-dark));
             display: flex; align-items: center; justify-content: center;
-            color: white; font-size: .85rem; font-weight: 700;
-            letter-spacing: .5px; flex-shrink: 0;
-            transition: transform .2s, box-shadow .2s;
+            color: white; font-size: .85rem; font-weight: 700; flex-shrink: 0;
         }
-        .avatar-btn:hover .avatar-circle {
-            transform: scale(1.08);
-            box-shadow: 0 2px 10px rgba(59,130,246,.4);
-        }
-        .topbar .username { font-weight: 600; color: var(--blue); font-size: .95rem; }
-        .topbar .role-badge {
-            font-size: .75rem; background: var(--blue-light);
-            color: var(--blue); padding: .2rem .6rem;
-            border-radius: 99px; font-weight: 600;
-        }
+        .username { font-weight: 600; color: var(--blue); font-size: .95rem; }
 
-        /* ── Page content ── */
+        /* Page content */
         .page-content { flex: 1; padding: 2rem; }
 
-        .page-heading {
-            font-size: 1.75rem; font-weight: 800;
-            color: var(--blue-dark); margin-bottom: .25rem;
-        }
-        .page-subheading {
-            font-size: .9rem; color: var(--text-muted); margin-bottom: 1.75rem;
-        }
-
-        /* ── Stat cards ── */
-        .stat-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.25rem;
-            margin-bottom: 1.75rem;
-        }
-        .stat-card {
-            background: var(--white);
-            border: 1.5px solid var(--border);
-            border-radius: 16px;
-            padding: 1.5rem;
-            display: flex; align-items: center; gap: 1rem;
-        }
-        .stat-icon {
-            width: 48px; height: 48px; border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem; flex-shrink: 0;
-        }
-        .stat-icon.blue  { background: var(--blue-light); }
-        .stat-icon.green { background: #DCFCE7; }
-        .stat-icon.yellow { background: #FEF9C3; }
-        .stat-info .stat-value {
-            font-size: 1.75rem; font-weight: 800; color: var(--text);
-        }
-        .stat-info .stat-label {
-            font-size: .8rem; color: var(--text-muted); font-weight: 500;
-        }
-
-        /* ── Table ── */
+        /* Table card */
         .table-card {
             background: var(--white);
             border: 1.5px solid var(--border);
@@ -195,26 +91,26 @@
             display: flex; align-items: center; justify-content: space-between;
             border-bottom: 1px solid var(--border);
         }
-        .table-header h2 {
-            font-size: 1rem; font-weight: 700; color: var(--blue-dark);
-        }
+        .table-header h2 { font-size: 1rem; font-weight: 700; color: var(--blue); }
+        .search-wrap { position: relative; }
         .search-input {
             border: 1.5px solid var(--border); border-radius: 10px;
-            padding: .5rem 1rem; font-size: .85rem;
-            font-family: 'Poppins', sans-serif;
-            outline: none; transition: border .2s;
-            width: 200px;
+            padding: .5rem 1rem .5rem 2.25rem; font-size: .85rem;
+            font-family: 'Poppins', sans-serif; outline: none;
+            transition: border .2s; width: 220px;
         }
         .search-input:focus { border-color: var(--blue); }
+        .search-icon {
+            position: absolute; left: .75rem; top: 50%;
+            transform: translateY(-50%); color: var(--text-muted);
+        }
+        .search-icon svg { width: 16px; height: 16px; }
 
         table { width: 100%; border-collapse: collapse; }
         thead th {
-            background: #F8FAFC;
-            padding: .875rem 1.25rem;
-            text-align: left;
-            font-size: .8rem; font-weight: 600;
-            color: var(--text-muted);
-            border-bottom: 1px solid var(--border);
+            background: #F8FAFC; padding: .875rem 1.25rem;
+            text-align: left; font-size: .8rem; font-weight: 600;
+            color: var(--text-muted); border-bottom: 1px solid var(--border);
         }
         tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
         tbody tr:last-child { border-bottom: none; }
@@ -222,48 +118,26 @@
         tbody td { padding: 1rem 1.25rem; font-size: .875rem; color: var(--text); }
 
         .avatar-sm {
-            width: 32px; height: 32px; border-radius: 50%;
+            width: 36px; height: 36px; border-radius: 50%;
             background: linear-gradient(135deg, var(--blue), var(--blue-dark));
             display: inline-flex; align-items: center; justify-content: center;
-            color: white; font-size: .75rem; font-weight: 700;
-            margin-right: .5rem;
+            color: white; font-size: .8rem; font-weight: 700;
+            margin-right: .5rem; flex-shrink: 0;
         }
         .nama-cell { display: flex; align-items: center; }
 
-        .progress-bar-wrap {
-            display: flex; align-items: center; gap: .5rem;
-        }
-        .bar-bg {
-            flex: 1; background: #F1F5F9;
-            border-radius: 99px; height: 6px; overflow: hidden;
-            min-width: 80px;
-        }
-        .bar-fill { height: 100%; border-radius: 99px; background: var(--blue); }
-        .pct-text { font-size: .8rem; font-weight: 600; color: var(--blue); min-width: 36px; }
+        .progress-bar-wrap { display: flex; align-items: center; gap: .5rem; }
+        .bar-bg { flex: 1; background: #E2E8F0; border-radius: 99px; height: 8px; overflow: hidden; min-width: 100px; }
+        .bar-fill { height: 100%; border-radius: 99px; background: var(--blue); min-width: 0px; }
+        .pct-text { font-size: .8rem; font-weight: 700; color: var(--blue); min-width: 36px; }
 
-        .badge {
-            display: inline-block; padding: .25rem .75rem;
-            border-radius: 99px; font-size: .75rem; font-weight: 600;
-        }
-        .badge.aktif      { background: #DCFCE7; color: #16A34A; }
-        .badge.kurang     { background: #FEF9C3; color: #B45309; }
-        .badge.tidak      { background: #FEE2E2; color: #DC2626; }
-
-        .btn-detail {
-            border: 1.5px solid var(--blue); color: var(--blue);
-            background: none; border-radius: 8px;
-            padding: .35rem .875rem; font-size: .8rem;
-            font-family: 'Poppins', sans-serif; font-weight: 600;
-            cursor: pointer; transition: all .2s;
-        }
-        .btn-detail:hover { background: var(--blue); color: white; }
+        .badge { display: inline-block; padding: .25rem .75rem; border-radius: 99px; font-size: .75rem; font-weight: 600; }
+        .badge.aktif   { background: #DCFCE7; color: #16A34A; }
+        .badge.kurang  { background: #FEF9C3; color: #B45309; }
+        .badge.tidak   { background: #FEE2E2; color: #DC2626; }
 
         /* Pagination */
-        .pagination {
-            display: flex; justify-content: center;
-            align-items: center; gap: .5rem;
-            padding: 1.25rem;
-        }
+        .pagination { display: flex; justify-content: center; align-items: center; gap: .5rem; padding: 1.25rem; }
         .page-btn {
             width: 34px; height: 34px; border-radius: 8px;
             display: flex; align-items: center; justify-content: center;
@@ -277,46 +151,20 @@
         .page-btn:hover:not(.active) { border-color: var(--blue); color: var(--blue); }
 
         /* Footer */
-        .dash-footer {
-            background: #F8FAFC;
-            border-top: 1px solid var(--border);
-            padding: 2.5rem 2rem 0;
-            margin: 0 -2rem;
-        }
-        .footer-inner {
-            display: grid; grid-template-columns: 1fr 1fr;
-            gap: 3rem; align-items: start; padding-bottom: 2rem;
-        }
+        .dash-footer { background: #F8FAFC; border-top: 1px solid var(--border); padding: 2.5rem 2rem 0; margin: 0 -2rem; }
+        .footer-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; padding-bottom: 2rem; }
         .footer-logo img { height: 60px; object-fit: contain; margin-bottom: 1rem; display: block; }
         .footer-desc { font-size: .875rem; color: var(--text-muted); line-height: 1.7; max-width: 380px; }
         .contact-section h4 { font-size: 1.1rem; font-weight: 700; color: var(--green); margin-bottom: 1rem; }
-        .contact-item {
-            display: flex; align-items: center; gap: .75rem;
-            font-size: .875rem; color: var(--text); margin-bottom: .75rem;
-        }
-        .contact-icon {
-            width: 36px; height: 36px; border-radius: 50%;
-            background: var(--blue-light);
-            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-        }
+        .contact-item { display: flex; align-items: center; gap: .75rem; font-size: .875rem; color: var(--text); margin-bottom: .75rem; }
+        .contact-icon { width: 36px; height: 36px; border-radius: 50%; background: var(--blue-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .contact-icon img { width: 18px; height: 18px; object-fit: contain; }
         .contact-item a { color: var(--blue); }
-        .footer-copyright {
-            text-align: center; padding: 1.25rem 0;
-            font-size: .8rem; color: var(--text-muted);
-            border-top: 1px solid var(--border);
-        }
+        .footer-copyright { text-align: center; padding: 1.25rem 0; font-size: .8rem; color: var(--text-muted); border-top: 1px solid var(--border); }
 
-        /* Sidebar overlay mobile */
-        .sidebar-overlay {
-            display: none; position: fixed; inset: 0;
-            background: rgba(0,0,0,.4); z-index: 150;
-        }
+        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 150; }
 
-        @media (max-width: 900px) {
-            .stat-grid { grid-template-columns: repeat(2, 1fr); }
-            .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
-        }
+        @media (max-width: 900px) { .footer-inner { grid-template-columns: 1fr; gap: 2rem; } }
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); }
             .sidebar.open { transform: translateX(0); }
@@ -326,10 +174,7 @@
             .page-content { padding: 1.25rem 1rem; }
             .dash-footer { margin: 0 -1rem; padding-left: 1rem; padding-right: 1rem; }
         }
-        @media (max-width: 520px) {
-            .stat-grid { grid-template-columns: 1fr; }
-            .page-heading { font-size: 1.35rem; }
-        }
+        @media (max-width: 520px) { .page-heading { font-size: 1.35rem; } }
     </style>
 </head>
 <body>
@@ -342,17 +187,15 @@
                 <img src="{{ asset('img/logo dan codestep.png') }}" alt="CodeStep">
             </a>
         </div>
-
         <nav class="sidebar-nav">
-            <a href="{{ route('guru.dashboard') }}" class="nav-item active">
+            <a href="{{ route('guru.dashboard') }}" class="nav-item">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
                     <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
                 </svg>
                 Dashboard
             </a>
-
-            <a href="{{ route('guru.siswa') }}" class="nav-item">
+            <a href="{{ route('guru.siswa') }}" class="nav-item active">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
                     <circle cx="9" cy="7" r="4"/>
@@ -361,18 +204,13 @@
                 </svg>
                 Siswa
             </a>
-
             <a href="#" class="nav-item">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                     <polyline points="14 2 14 8 20 8"/>
-                    <line x1="16" y1="13" x2="8" y2="13"/>
-                    <line x1="16" y1="17" x2="8" y2="17"/>
-                    <polyline points="10 9 9 9 8 9"/>
                 </svg>
                 Materi
             </a>
-
             <a href="#" class="nav-item">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"/>
@@ -382,7 +220,6 @@
                 Quiz
             </a>
         </nav>
-
         <div class="sidebar-footer">
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
@@ -410,13 +247,11 @@
                     <line x1="3" y1="18" x2="21" y2="18"/>
                 </svg>
             </button>
-
             @php
                 $nameParts = explode(' ', Auth::user()->name);
                 $initials = strtoupper(substr($nameParts[0], 0, 1));
                 if (count($nameParts) > 1) $initials .= strtoupper(substr($nameParts[1], 0, 1));
             @endphp
-
             <a href="#" class="avatar-btn">
                 <div class="avatar-circle">{{ $initials }}</div>
                 <span class="username">{{ Auth::user()->name }}</span>
@@ -425,39 +260,18 @@
 
         <div class="page-content">
 
-            <h1 class="page-heading">Hai, {{ Auth::user()->name }}!</h1>
-            <p class="page-subheading">Kelola dan lihat data siswa kelas Anda.</p>
-
-            {{-- Stat cards --}}
-            <div class="stat-grid">
-                <div class="stat-card">
-                    <div class="stat-icon blue">👨‍🎓</div>
-                    <div class="stat-info">
-                        <div class="stat-value">{{ $siswa->count() }}</div>
-                        <div class="stat-label">Total Siswa</div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon green">✅</div>
-                    <div class="stat-info">
-                        <div class="stat-value">{{ $siswa->where('streak', '>', 0)->count() }}</div>
-                        <div class="stat-label">Siswa Aktif</div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon yellow">🔥</div>
-                    <div class="stat-info">
-                        <div class="stat-value">{{ $siswa->avg('streak') ? round($siswa->avg('streak')) : 0 }}</div>
-                        <div class="stat-label">Rata-rata Streak</div>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Tabel siswa --}}
+            {{-- Table --}}
             <div class="table-card">
                 <div class="table-header">
                     <h2>Daftar Siswa</h2>
-                    <input type="text" class="search-input" placeholder="Cari siswa..." id="searchInput" onkeyup="filterTable()">
+                    <div class="search-wrap">
+                        <span class="search-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                            </svg>
+                        </span>
+                        <input type="text" class="search-input" placeholder="Cari siswa..." id="searchInput" onkeyup="filterTable()">
+                    </div>
                 </div>
                 <table id="siswaTable">
                     <thead>
@@ -465,7 +279,8 @@
                             <th>No</th>
                             <th>Nama Siswa</th>
                             <th>Username</th>
-                            <th>Streak</th>
+                            <th>Progress</th>
+                            <th>Rata-rata Nilai</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -490,7 +305,17 @@
                                 </div>
                             </td>
                             <td style="color:var(--text-muted)">{{ $s->username }}</td>
-                            <td>🔥 {{ $streak }} days</td>
+                            <td>
+                                <div class="progress-bar-wrap">
+                                    <span class="pct-text" style="color: {{ $s->total_progress > 0 ? 'var(--blue)' : 'var(--text-muted)' }}">
+                                     {{ $s->total_progress }}%
+                                    </span>
+                                <div class="bar-bg">
+                                    <div class="bar-fill" style="width:{{ $s->total_progress }}%"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ $s->avg_nilai }}</td>
                             <td><span class="badge {{ $status }}">{{ $label }}</span></td>
                         </tr>
                         @empty
@@ -520,21 +345,15 @@
                     <div class="contact-section">
                         <h4>Contact Us</h4>
                         <div class="contact-item">
-                            <div class="contact-icon">
-                                <img src="{{ asset('img/emailicon.png') }}" alt="Email">
-                            </div>
+                            <div class="contact-icon"><img src="{{ asset('img/emailicon.png') }}" alt="Email"></div>
                             <a href="mailto:codestep@gmail.com">codestep@gmail.com</a>
                         </div>
                         <div class="contact-item">
-                            <div class="contact-icon">
-                                <img src="{{ asset('img/telepon.png') }}" alt="Phone">
-                            </div>
+                            <div class="contact-icon"><img src="{{ asset('img/telepon.png') }}" alt="Phone"></div>
                             <a href="tel:08138231921">0813-8231-1921</a>
                         </div>
                         <div class="contact-item">
-                            <div class="contact-icon">
-                                <img src="{{ asset('img/instagramicon.png') }}" alt="Instagram">
-                            </div>
+                            <div class="contact-icon"><img src="{{ asset('img/instagramicon.png') }}" alt="Instagram"></div>
                             <a href="https://instagram.com/codeStep.id" target="_blank">@codeStep.id</a>
                         </div>
                     </div>
@@ -549,13 +368,11 @@
 <script>
     function openSidebar()  { document.getElementById('sidebar').classList.add('open'); document.getElementById('overlay').classList.add('open'); }
     function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
-
     function filterTable() {
         const input = document.getElementById('searchInput').value.toLowerCase();
         const rows = document.querySelectorAll('#siswaTable tbody tr');
         rows.forEach(row => {
-            const text = row.textContent.toLowerCase();
-            row.style.display = text.includes(input) ? '' : 'none';
+            row.style.display = row.textContent.toLowerCase().includes(input) ? '' : 'none';
         });
     }
 </script>
