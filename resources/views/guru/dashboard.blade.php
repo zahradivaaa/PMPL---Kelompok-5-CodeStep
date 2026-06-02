@@ -417,7 +417,7 @@
                 if (count($nameParts) > 1) $initials .= strtoupper(substr($nameParts[1], 0, 1));
             @endphp
 
-            <a href="#" class="avatar-btn">
+            <a href="{{ route('guru.profile') }}" class="avatar-btn">
                 <div class="avatar-circle">{{ $initials }}</div>
                 <span class="username">{{ Auth::user()->name }}</span>
             </a>

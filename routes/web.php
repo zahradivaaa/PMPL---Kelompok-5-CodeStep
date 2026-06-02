@@ -35,6 +35,7 @@ Route::get('/kategori/{slug}', [KategoriController::class, 'show'])
 Route::middleware(['auth', 'guru'])->prefix('guru')->name('guru.')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\Guru\GuruDashboardController::class, 'index'])->name('dashboard');
     Route::get('/siswa', [App\Http\Controllers\Guru\GuruSiswaController::class, 'index'])->name('siswa');
+    Route::get('/profile', [App\Http\Controllers\Guru\GuruProfileController::class, 'index'])->name('profile');
 });
 
 
