@@ -249,13 +249,6 @@
                 </svg>
                 Quiz
             </a>
-            <a href="{{ route('guru.profile') }}" class="nav-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                    <circle cx="12" cy="7" r="4"/>
-                </svg>
-                Profil
-            </a>
         </nav>
         <div class="sidebar-footer">
             <form method="POST" action="{{ route('logout') }}">
@@ -315,36 +308,6 @@
                 </a>
             </div>
 
-            {{-- Stats --}}
-            @php
-                $hasilList  = $quiz->hasilQuizs ?? collect();
-                $peserta    = $hasilList->count();
-                $rataRata   = $peserta > 0 ? round($hasilList->avg('nilai')) : 0;
-                $tertinggi  = $peserta > 0 ? $hasilList->max('nilai') : 0;
-                $terendah   = $peserta > 0 ? $hasilList->min('nilai') : 0;
-            @endphp
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-label">Peserta</div>
-                    <div class="stat-value">{{ $peserta }}</div>
-                    <div class="stat-sub">Siswa</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Rata-rata Nilai</div>
-                    <div class="stat-value">{{ $rataRata }}</div>
-                    <div class="stat-sub">dari 100</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Nilai Tertinggi</div>
-                    <div class="stat-value" style="color:#16A34A">{{ $tertinggi }}</div>
-                    <div class="stat-sub">dari 100</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Nilai Terendah</div>
-                    <div class="stat-value" style="color:var(--red)">{{ $terendah }}</div>
-                    <div class="stat-sub">dari 100</div>
-                </div>
-            </div>
 
             {{-- Table --}}
             <div class="table-card">

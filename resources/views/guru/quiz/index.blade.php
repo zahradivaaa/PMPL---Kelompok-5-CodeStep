@@ -441,8 +441,7 @@
                             <th>Materi</th>
                             <th>Jumlah Soal</th>
                             <th>Deadline</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
+                            <th>Hasil Siswa</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -453,30 +452,40 @@
                             <td>{{ $quiz->materi->judul ?? '-' }}</td>
 
                             <td>{{ \Carbon\Carbon::parse($quiz->deadline)->format('d F Y') }}</td>
-                            <td>
-                                <div class="action-wrap">
-                                    {{-- Edit --}}
-                                    <a href="{{ route('guru.quiz.edit', $quiz->id) }}" class="btn-icon edit" title="Edit">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                                        </svg>
-                                    </a>
-                                    {{-- Delete --}}
-                                    <form action="{{ route('guru.quiz.destroy', $quiz->id) }}" method="POST" onsubmit="return confirmDelete()">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn-icon del" title="Hapus">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                <polyline points="3 6 5 6 21 6"/>
-                                                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-                                                <path d="M10 11v6"/><path d="M14 11v6"/>
-                                                <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
-                                            </svg>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
+<td>
+    <a href="{{ route('guru.quiz.hasil', $quiz->id) }}"
+       style="display:inline-flex;align-items:center;gap:.4rem;background:var(--blue-light);color:var(--blue);border:1.5px solid var(--blue);border-radius:8px;padding:.35rem .875rem;font-size:.8rem;font-weight:600;text-decoration:none;transition:all .2s;"
+       onmouseover="this.style.background='var(--blue)';this.style.color='white'"
+       onmouseout="this.style.background='var(--blue-light)';this.style.color='var(--blue)'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+        </svg>
+        Lihat Hasil
+    </a>
+</td>
+<td>
+    <div class="action-wrap">
+        <a href="{{ route('guru.quiz.edit', $quiz->id) }}" class="btn-icon edit" title="Edit">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+        </a>
+        <form action="{{ route('guru.quiz.destroy', $quiz->id) }}" method="POST" onsubmit="return confirmDelete()">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn-icon del" title="Hapus">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                    <path d="M10 11v6"/><path d="M14 11v6"/>
+                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                </svg>
+            </button>
+        </form>
+    </div>
+</td>
                         </tr>
                         @empty
                         <tr>

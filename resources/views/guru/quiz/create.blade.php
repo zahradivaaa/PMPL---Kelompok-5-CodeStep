@@ -341,13 +341,7 @@
                 Quiz
             </a>
 
-            <a href="{{ route('guru.profile') }}" class="nav-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                    <circle cx="12" cy="7" r="4"/>
-                </svg>
-                Profil
-            </a>
+
         </nav>
 
         <div class="sidebar-footer">
@@ -467,23 +461,7 @@
                             @enderror
                         </div>
 
-                        {{-- Status --}}
-                        <div class="form-group">
-                            <label class="form-label">Status</label>
-                            <div class="radio-group">
-                                <label class="radio-item">
-                                    <input type="radio" name="status" value="aktif" {{ old('status', 'aktif') == 'aktif' ? 'checked' : '' }}>
-                                    Aktif
-                                </label>
-                                <label class="radio-item">
-                                    <input type="radio" name="status" value="draft" {{ old('status') == 'draft' ? 'checked' : '' }}>
-                                    Draft
-                                </label>
-                            </div>
-                            @error('status')
-                                <span class="invalid-feedback">{{ $message }}</span>
-                            @enderror
-                        </div>
+        
 
                         {{-- Pilih Materi --}}
                         <div class="form-group">

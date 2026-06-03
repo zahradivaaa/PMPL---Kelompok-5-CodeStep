@@ -62,5 +62,10 @@ Route::middleware(['auth', 'guru'])->prefix('guru')->name('guru.')->group(functi
     Route::delete('/soal/{id}', [App\Http\Controllers\Guru\GuruSoalController::class, 'destroy'])->name('soal.destroy');
     });
 
+    Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/quiz/{materi}', [App\Http\Controllers\QuizController::class, 'kerjakan'])->name('quiz.kerjakan');
+    Route::post('/quiz/{materi}', [App\Http\Controllers\QuizController::class, 'submit'])->name('quiz.submit');
+    });
+
 
 require __DIR__.'/auth.php';

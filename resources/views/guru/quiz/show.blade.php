@@ -338,13 +338,7 @@
                 </svg>
                 Quiz
             </a>
-            <a href="{{ route('guru.profile') }}" class="nav-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                    <circle cx="12" cy="7" r="4"/>
-                </svg>
-                Profil
-            </a>
+
         </nav>
         <div class="sidebar-footer">
             <form method="POST" action="{{ route('logout') }}">
@@ -435,7 +429,6 @@
             {{-- Tab Bar --}}
             <div class="tab-bar">
                 <button class="tab-btn active" onclick="switchTab('daftar-soal', this)">Daftar Soal</button>
-                <a href="{{ route('guru.quiz.show', $quiz->id) }}?tab=info" class="tab-btn" id="tab-info">Informasi Quiz</a>
                 <a href="{{ route('guru.quiz.hasil', $quiz->id) }}" class="tab-btn">Hasil Siswa</a>
             </div>
 

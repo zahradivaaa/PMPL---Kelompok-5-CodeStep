@@ -204,6 +204,13 @@
             .sidebar-overlay.open { display: block; }
             .page-content { padding: 1.25rem 1rem; }
         }
+
+        .materi-item.sudah-dibaca {
+        border-color: var(--green);
+        background: #F0FDF4;
+        color: var(--text);
+        }
+
     </style>
 </head>
 <body>
@@ -312,24 +319,66 @@
             </div>
 
             {{-- Daftar Materi --}}
-            <div class="materi-list">
-                @forelse($materis as $index => $materi)
-                    @if($materi->terkunci)
-                        <div class="materi-item terkunci">
-                            {{ $index + 1 }}. {{ $materi->judul }}
-                            <span class="icon-kunci">🔑</span>
-                        </div>
-                    @else
-                        <a href="{{ route('materi.baca', $materi->id) }}" class="materi-item">
-    {{ $index + 1 }}. {{ $materi->judul }}
-</a>
-                    @endif
-                @empty
-                    <div style="text-align:center;color:var(--text-muted);padding:2rem;">
-                        Belum ada materi untuk kategori ini.
-                    </div>
-                @endforelse
+<div class="materi-list">
+    @forelse($materis as $index => $materi)
+
+        {{-- Item Materi --}}
+        @if($materi->terkunci)
+            <div class="materi-item terkunci">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:20px;height:20px;margin-right:.5rem;flex-shrink:0;">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+                {{ $index + 1 }}. {{ $materi->judul }}
             </div>
+        @else
+            <a href="{{ route('materi.baca', $materi->id) }}"
+               class="materi-item {{ $materi->sudah_dibaca ? 'sudah-dibaca' : '' }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:20px;height:20px;margin-right:.5rem;flex-shrink:0;color:var(--blue);">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                </svg>
+                {{ $index + 1 }}. {{ $materi->judul }}
+                @if($materi->sudah_dibaca)
+                    <span style="margin-left:auto;color:var(--green);font-size:.8rem;font-weight:600;">✅ Selesai</span>
+                @endif
+            </a>
+        @endif
+
+        {{-- Quiz di bawah materi --}}
+        @if($materi->jumlah_quiz > 0)
+            @if($materi->quiz_terkunci)
+                <div class="materi-item terkunci" style="margin-left:1.5rem;border-left:3px solid var(--border);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:20px;height:20px;margin-right:.5rem;flex-shrink:0;">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                    Quiz {{ $index + 1 }} – Baca materi dulu untuk membuka quiz
+                </div>
+            @else
+                <a href="{{ route('quiz.kerjakan', $materi->id) }}"
+                   class="materi-item {{ $materi->quiz_selesai ? 'sudah-dibaca' : '' }}"
+                   style="margin-left:1.5rem;border-left:3px solid {{ $materi->quiz_selesai ? 'var(--green)' : 'var(--blue)' }};">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:20px;height:20px;margin-right:.5rem;flex-shrink:0;color:{{ $materi->quiz_selesai ? 'var(--green)' : 'var(--blue)' }};">
+                        <path d="M9 11l3 3L22 4"/>
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                    </svg>
+                    Quiz {{ $index + 1 }} – {{ $materi->judul }}
+                    @if($materi->quiz_selesai)
+                        <span style="margin-left:auto;color:var(--green);font-size:.8rem;font-weight:600;">✅ Selesai</span>
+                    @else
+                        <span style="margin-left:auto;color:var(--blue);font-size:.8rem;font-weight:600;">Kerjakan →</span>
+                    @endif
+                </a>
+            @endif
+        @endif
+
+    @empty
+        <div style="text-align:center;color:var(--text-muted);padding:2rem;">
+            Belum ada materi untuk kategori ini.
+        </div>
+    @endforelse
+</div>
 
         </div>
     </div>
