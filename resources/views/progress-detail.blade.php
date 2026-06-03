@@ -330,7 +330,6 @@
                         </div>
                         <span class="section-title-text">Pelajaran</span>
                     </div>
-                    <span class="section-title-text" style="flex:1;">Pelajaran</span>
                     <span style="font-size:.9rem;font-weight:700;color:{{ $data['pelajaran']['pct'] > 0 ? $data['color'] : '#94A3B8' }};">
                         {{ $data['pelajaran']['pct'] }}%
                     </span>
@@ -352,7 +351,6 @@
                         </div>
                         <span class="section-title-text">Quiz</span>
                     </div>
-                    <span class="section-title-text" style="flex:1;">Quiz</span>
                     <span style="font-size:.9rem;font-weight:700;color:{{ $data['quiz']['pct'] > 0 ? $data['color'] : '#94A3B8' }};">
                         {{ $data['quiz']['pct'] }}%
                     </span>
@@ -374,7 +372,6 @@
                         </div>
                         <span class="section-title-text">Nilai</span>
                     </div>
-                    <span class="section-title-text" style="flex:1;">Nilai</span>
                     <span style="font-size:.9rem;font-weight:700;color:{{ $data['nilai']['avg'] > 0 ? $data['color'] : '#94A3B8' }};">
                         {{ $data['nilai']['avg'] }}/100
                     </span>
